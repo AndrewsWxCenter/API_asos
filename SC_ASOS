@@ -1,0 +1,379 @@
+ 
+<br>
+<p>SOUTH CAROLINA ASOS</p>
+            <table class="scarolinas" id="scarolinas">
+                <tr>
+                    <th width="3%">ID</th>
+                    <th width="10%">Location</th>
+                    <th width="5%">County</th>
+                    <th width="2%">Elev</th>
+                    <th width="6%">Wx</th>
+                    <th width="3%">Temp</th>
+                    <th width="3%">6hrHi</th>
+                    <th width="3%">6hrLo</th>
+                    <th width="3%">24hrHi</th>
+                    <th width="3%">24hrLo</th>
+                    <th width="3%">Tdew</th>
+                    <th width="3%">T-Tdew</th>
+                    <th width="3%">1hrPcp</th>
+                    <th width="3%">3hrPcp</th>
+                    <th width="3%">6hrPcp</th>
+                    <th width="3%">24hrPcp</th>
+                    <th width="4%">Wind</th>
+                    <th width="2%">Vis</th>
+                    <th width="35%">METAR</th>
+                </tr>
+                <tr>
+                    <td>KAND</td> 
+                    <td>Anderson</td> 
+                    <td>Anderson</td> 
+                    <td>781'</td> 
+                    <td><?php echo $KAND_cond; ?></td> 
+                    <td><?php echo $KAND_temp; ?></td> 
+                    <td><?php echo $KAND_6hhi; ?></td> 
+                    <td><?php echo $KAND_6hlo; ?></td> 
+                    <?php if ($KAND_24hi > $highKAND){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAND_24hi</td>"; 
+                                } elseif ($KAND_24hi < $highKAND){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAND_24hi</td>";
+                                } else echo "<td>$KAND_24hi;</td>" ?>
+                    <?php if ($KAND_24lo > $lowKAND){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAND_24lo</td>"; 
+                                } elseif ($KAND_24lo < $lowKAND){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAND_24lo</td>";
+                                } else echo "<td>$KAND_24lo;</td>" ?>
+                    <td><?php echo $KAND_dewp; ?></td> 
+                    <td><?php echo $KAND_temp-$KAND_dewp; ?></td> 
+                    <td><?php echo $KAND_1pcp; ?></td>
+                    <td><?php echo $KAND_3pcp; ?></td>
+                    <td><?php echo $KAND_6pcp; ?></td>
+                    <td><?php echo $KAND_24pc; ?></td>
+                    <td><?php echo $KAND_wdir; ?> <?php echo $KAND_wind; ?></td>
+                    <td><?php echo $KAND_visi; ?></td> 
+                    <td><?php echo $KAND_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCAE</td> 
+                    <td>Columbia Metropolitan</td> 
+                    <td>Lexington</td> 
+                    <td>233'</td> 
+                    <td><?php echo $KCAE_cond; ?></td> 
+                    <td><?php echo $KCAE_temp; ?></td> 
+                    <td><?php echo $KCAE_6hhi; ?></td> 
+                    <td><?php echo $KCAE_6hlo; ?></td> 
+                    <?php if ($KCAE_24hi > $highKCAE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCAE_24hi</td>"; 
+                                } elseif ($KCAE_24hi < $highKCAE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCAE_24hi</td>";
+                                } else echo "<td>$KCAE_24hi;</td>" ?>
+                    <?php if ($KCAE_24lo > $lowKCAE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCAE_24lo</td>"; 
+                                } elseif ($KCAE_24lo < $lowKCAE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCAE_24lo</td>";
+                                } else echo "<td>$KCAE_24lo;</td>" ?>
+                    <td><?php echo $KCAE_dewp; ?></td> 
+                    <td><?php echo $KCAE_temp-$KCAE_dewp; ?></td> 
+                    <td><?php echo $KCAE_1pcp; ?></td>
+                    <td><?php echo $KCAE_3pcp; ?></td>
+                    <td><?php echo $KCAE_6pcp; ?></td>
+                    <td><?php echo $KCAE_24pc; ?></td>
+                    <td><?php echo $KCAE_wdir; ?> <?php echo $KCAE_wind; ?></td>
+                    <td><?php echo $KCAE_visi; ?></td> 
+                    <td><?php echo $KCAE_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCEU</td> 
+                    <td>Clemson</td> 
+                    <td>Oconee</td> 
+                    <td>892'</td> 
+                    <td><?php echo $KCEU_cond; ?></td> 
+                    <td><?php echo $KCEU_temp; ?></td> 
+                    <td><?php echo $KCEU_6hhi; ?></td> 
+                    <td><?php echo $KCEU_6hlo; ?></td> 
+                    <?php if ($KCEU_24hi > $highKCEU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCEU_24hi</td>"; 
+                                } elseif ($KCEU_24hi < $highKCEU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCEU_24hi</td>";
+                                } else echo "<td>$KCEU_24hi;</td>" ?>
+                    <?php if ($KCEU_24lo > $lowKCEU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCEU_24lo</td>"; 
+                                } elseif ($KCEU_24lo < $lowKCEU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCEU_24lo</td>";
+                                } else echo "<td>$KCEU_24lo;</td>" ?>
+                    <td><?php echo $KCEU_dewp; ?></td> 
+                    <td><?php echo $KCEU_temp-$KCEU_dewp; ?></td> 
+                    <td><?php echo $KCEU_1pcp; ?></td>
+                    <td><?php echo $KCEU_3pcp; ?></td>
+                    <td><?php echo $KCEU_6pcp; ?></td>
+                    <td><?php echo $KCEU_24pc; ?></td>
+                    <td><?php echo $KCEU_wdir; ?> <?php echo $KCEU_wind; ?></td>
+                    <td><?php echo $KCEU_visi; ?></td> 
+                    <td><?php echo $KCEU_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCHS</td> 
+                    <td>Charleston AFB/Int'l</td> 
+                    <td>Charleston</td> 
+                    <td>46'</td> 
+                    <td><?php echo $KCHS_cond; ?></td> 
+                    <td><?php echo $KCHS_temp; ?></td> 
+                    <td><?php echo $KCHS_6hhi; ?></td> 
+                    <td><?php echo $KCHS_6hlo; ?></td> 
+                    <?php if ($KCHS_24hi > $highKCHS){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCHS_24hi</td>"; 
+                                } elseif ($KCHS_24hi < $highKCHS){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCHS_24hi</td>";
+                                } else echo "<td>$KCHS_24hi;</td>" ?>
+                    <?php if ($KCHS_24lo > $lowKCHS){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCHS_24lo</td>"; 
+                                } elseif ($KCHS_24lo < $lowKCHS){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCHS_24lo</td>";
+                                } else echo "<td>$KCHS_24lo;</td>" ?>
+                    <td><?php echo $KCHS_dewp; ?></td> 
+                    <td><?php echo $KCHS_temp-$KCHS_dewp; ?></td> 
+                    <td><?php echo $KCHS_1pcp; ?></td>
+                    <td><?php echo $KCHS_3pcp; ?></td>
+                    <td><?php echo $KCHS_6pcp; ?></td>
+                    <td><?php echo $KCHS_24pc; ?></td>
+                    <td><?php echo $KCHS_wdir; ?> <?php echo $KCHS_wind; ?></td>
+                    <td><?php echo $KCHS_visi; ?></td> 
+                    <td><?php echo $KCHS_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCRE</td> 
+                    <td>North Myrtle Beach/Grand Strand</td> 
+                    <td>Horry</td> 
+                    <td>26'</td> 
+                    <td><?php echo $KCRE_cond; ?></td> 
+                    <td><?php echo $KCRE_temp; ?></td> 
+                    <td><?php echo $KCRE_6hhi; ?></td> 
+                    <td><?php echo $KCRE_6hlo; ?></td> 
+                    <?php if ($KCRE_24hi > $highKCRE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCRE_24hi</td>"; 
+                                } elseif ($KCRE_24hi < $highKCRE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCRE_24hi</td>";
+                                } else echo "<td>$KCRE_24hi;</td>" ?>
+                    <?php if ($KCRE_24lo > $lowKCRE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCRE_24lo</td>"; 
+                                } elseif ($KCRE_24lo < $lowKCRE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCRE_24lo</td>";
+                                } else echo "<td>$KCRE_24lo;</td>" ?>  
+                    <td><?php echo $KCRE_dewp; ?></td> 
+                    <td><?php echo $KCRE_temp-$KCRE_dewp; ?></td> 
+                    <td><?php echo $KCRE_1pcp; ?></td>
+                    <td><?php echo $KCRE_3pcp; ?></td>
+                    <td><?php echo $KCRE_6pcp; ?></td>
+                    <td><?php echo $KCRE_24pc; ?></td>
+                    <td><?php echo $KCRE_wdir; ?> <?php echo $KCRE_wind; ?></td>
+                    <td><?php echo $KCRE_visi; ?></td> 
+                    <td><?php echo $KCRE_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCUB</td> 
+                    <td>Columbia-Owens Dwntwn</td> 
+                    <td>Richland</td> 
+                    <td>210'</td> 
+                    <td><?php echo $KCUB_cond; ?></td> 
+                    <td><?php echo $KCUB_temp; ?></td> 
+                    <td><?php echo $KCUB_6hhi; ?></td> 
+                    <td><?php echo $KCUB_6hlo; ?></td> 
+                    <?php if ($KCUB_24hi > $highKCUB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCUB_24hi</td>"; 
+                                } elseif ($KCUB_24hi < $highKCUB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCUB_24hi</td>";
+                                } else echo "<td>$KCUB_24hi;</td>" ?>
+                    <?php if ($KCUB_24lo > $lowKCUB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCUB_24lo</td>"; 
+                                } elseif ($KCUB_24lo < $lowKCUB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCUB_24lo</td>";
+                                } else echo "<td>$KCUB_24lo;</td>" ?>
+                    <td><?php echo $KCUB_dewp; ?></td> 
+                    <td><?php echo $KCUB_temp-$KCUB_dewp; ?></td> 
+                    <td><?php echo $KCUB_1pcp; ?></td>
+                    <td><?php echo $KCUB_3pcp; ?></td>
+                    <td><?php echo $KCUB_6pcp; ?></td>
+                    <td><?php echo $KCUB_24pc; ?></td>
+                    <td><?php echo $KCUB_wdir; ?> <?php echo $KCUB_wind; ?></td>
+                    <td><?php echo $KCUB_visi; ?></td> 
+                    <td><?php echo $KCUB_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KFLO</td> 
+                    <td>Florence</td> 
+                    <td>Florence</td> 
+                    <td>146'</td> 
+                    <td><?php echo $KFLO_cond; ?></td> 
+                    <td><?php echo $KFLO_temp; ?></td> 
+                    <td><?php echo $KFLO_6hhi; ?></td> 
+                    <td><?php echo $KFLO_6hlo; ?></td> 
+                    <?php if ($KFLO_24hi > $highKFLO){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KFLO_24hi</td>"; 
+                                } elseif ($KFLO_24hi < $highKFLO){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KFLO_24hi</td>";
+                                } else echo "<td>$KFLO_24hi;</td>" ?>
+                    <?php if ($KFLO_24lo > $lowKFLO){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KFLO_24lo</td>"; 
+                                } elseif ($KFLO_24lo < $lowKFLO){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KFLO_24lo</td>";
+                                } else echo "<td>$KFLO_24lo;</td>" ?>  
+                    <td><?php echo $KFLO_dewp; ?></td> 
+                    <td><?php echo $KFLO_temp-$KFLO_dewp; ?></td> 
+                    <td><?php echo $KFLO_1pcp; ?></td>
+                    <td><?php echo $KFLO_3pcp; ?></td>
+                    <td><?php echo $KFLO_6pcp; ?></td>
+                    <td><?php echo $KFLO_24pc; ?></td>
+                    <td><?php echo $KFLO_wdir; ?> <?php echo $KFLO_wind; ?></td>
+                    <td><?php echo $KFLO_visi; ?></td> 
+                    <td><?php echo $KFLO_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGMU</td> 
+                    <td>Greenville Downtown</td> 
+                    <td>Greenville</td> 
+                    <td>1010'</td> 
+                    <td><?php echo $KGMU_cond; ?></td> 
+                    <td><?php echo $KGMU_temp; ?></td> 
+                    <td><?php echo $KGMU_6hhi; ?></td> 
+                    <td><?php echo $KGMU_6hlo; ?></td> 
+                    <?php if ($KGMU_24hi > $highKGMU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGMU_24hi</td>"; 
+                                } elseif ($KGMU_24hi < $highKGMU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGMU_24hi</td>";
+                                } else echo "<td>$KGMU_24hi;</td>" ?>
+                    <?php if ($KGMU_24lo > $lowKGMU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGMU_24lo</td>"; 
+                                } elseif ($KGMU_24lo < $lowKGMU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGMU_24lo</td>";
+                                } else echo "<td>$KGMU_24lo;</td>" ?>
+                    <td><?php echo $KGMU_dewp; ?></td> 
+                    <td><?php echo $KGMU_temp-$KGMU_dewp; ?></td> 
+                    <td><?php echo $KGMU_1pcp; ?></td>
+                    <td><?php echo $KGMU_3pcp; ?></td>
+                    <td><?php echo $KGMU_6pcp; ?></td>
+                    <td><?php echo $KGMU_24pc; ?></td>
+                    <td><?php echo $KGMU_wdir; ?> <?php echo $KGMU_wind; ?></td>
+                    <td><?php echo $KGMU_visi; ?></td> 
+                    <td><?php echo $KGMU_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGRD</td> 
+                    <td>Greenwood</td> 
+                    <td>Greenwood</td> 
+                    <td>630'</td> 
+                    <td><?php echo $KGRD_cond; ?></td> 
+                    <td><?php echo $KGRD_temp; ?></td> 
+                    <td><?php echo $KGRD_6hhi; ?></td> 
+                    <td><?php echo $KGRD_6hlo; ?></td> 
+                    <?php if ($KGRD_24hi > $highKGRD){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGRD_24hi</td>"; 
+                                } elseif ($KGRD_24hi < $highKGRD){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGRD_24hi</td>";
+                                } else echo "<td>$KGRD_24hi;</td>" ?>
+                    <?php if ($KGRD_24lo > $lowKGRD){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGRD_24lo</td>"; 
+                                } elseif ($KGRD_24lo < $lowKGRD){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGRD_24lo</td>";
+                                } else echo "<td>$KGRD_24lo;</td>" ?>
+                    <td><?php echo $KGRD_dewp; ?></td> 
+                    <td><?php echo $KGRD_temp-$KGRD_dewp; ?></td> 
+                    <td><?php echo $KGRD_1pcp; ?></td>
+                    <td><?php echo $KGRD_3pcp; ?></td>
+                    <td><?php echo $KGRD_6pcp; ?></td>
+                    <td><?php echo $KGRD_24pc; ?></td>
+                    <td><?php echo $KGRD_wdir; ?> <?php echo $KGRD_wind; ?></td>
+                    <td><?php echo $KGRD_visi; ?></td> 
+                    <td><?php echo $KGRD_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGSP</td> 
+                    <td>Greer/Greenville-Spartanburg Int'l</td> 
+                    <td>Greenville</td> 
+                    <td>971'</td> 
+                    <td><?php echo $KGSP_cond; ?></td> 
+                    <td><?php echo $KGSP_temp; ?></td> 
+                    <td><?php echo $KGSP_6hhi; ?></td> 
+                    <td><?php echo $KGSP_6hlo; ?></td> 
+                    <?php if ($KGSP_24hi > $highKGSP){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGSP_24hi</td>"; 
+                                } elseif ($KGSP_24hi < $highKGSP){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGSP_24hi</td>";
+                                } else echo "<td>$KGSP_24hi;</td>" ?>
+                    <?php if ($KGSP_24lo > $lowKGSP){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGSP_24lo</td>"; 
+                                } elseif ($KGSP_24lo < $lowKGSP){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGSP_24lo</td>";
+                                } else echo "<td>$KGSP_24lo;</td>" ?>
+                    <td><?php echo $KGSP_dewp; ?></td> 
+                    <td><?php echo $KGSP_temp-$KGSP_dewp; ?></td> 
+                    <td><?php echo $KGSP_1pcp; ?></td>
+                    <td><?php echo $KGSP_3pcp; ?></td>
+                    <td><?php echo $KGSP_6pcp; ?></td>
+                    <td><?php echo $KGSP_24pc; ?></td>
+                    <td><?php echo $KGSP_wdir; ?> <?php echo $KGSP_wind; ?></td>
+                    <td><?php echo $KGSP_visi; ?></td> 
+                    <td><?php echo $KGSP_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KOGB</td> 
+                    <td>Orangeburg</td> 
+                    <td>Orangeburg</td> 
+                    <td>197'</td> 
+                    <td><?php echo $KOGB_cond; ?></td> 
+                    <td><?php echo $KOGB_temp; ?></td> 
+                    <td><?php echo $KOGB_6hhi; ?></td> 
+                    <td><?php echo $KOGB_6hlo; ?></td> 
+                    <?php if ($KOGB_24hi > $highKOGB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KOGB_24hi</td>"; 
+                                } elseif ($KOGB_24hi < $highKOGB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KOGB_24hi</td>";
+                                } else echo "<td>$KOGB_24hi;</td>" ?>
+                    <?php if ($KOGB_24lo > $lowKOGB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KOGB_24lo</td>"; 
+                                } elseif ($KOGB_24lo < $lowKOGB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KOGB_24lo</td>";
+                                } else echo "<td>$KOGB_24lo;</td>" ?>
+                    <td><?php echo $KOGB_dewp; ?></td> 
+                    <td><?php echo $KOGB_temp-$KOGB_dewp; ?></td> 
+                    <td><?php echo $KOGB_1pcp; ?></td>
+                    <td><?php echo $KOGB_3pcp; ?></td>
+                    <td><?php echo $KOGB_6pcp; ?></td>
+                    <td><?php echo $KOGB_24pc; ?></td>
+                    <td><?php echo $KOGB_wdir; ?> <?php echo $KOGB_wind; ?></td>
+                    <td><?php echo $KOGB_visi; ?></td> 
+                    <td><?php echo $KOGB_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KUZA</td> 
+                    <td>Rock Hill</td> 
+                    <td>York</td> 
+                    <td>669'</td> 
+                    <td><?php echo $KUZA_cond; ?></td> 
+                    <td><?php echo $KUZA_temp; ?></td> 
+                    <td><?php echo $KUZA_6hhi; ?></td> 
+                    <td><?php echo $KUZA_6hlo; ?></td> 
+                    <?php if ($KUZA_24hi > $highKUZA){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KUZA_24hi</td>"; 
+                                } elseif ($KUZA_24hi < $highKUZA){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KUZA_24hi</td>";
+                                } else echo "<td>$KUZA_24hi;</td>" ?>
+                    <?php if ($KUZA_24lo > $lowKUZA){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KUZA_24lo</td>"; 
+                                } elseif ($KUZA_24lo < $lowKUZA){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KUZA_24lo</td>";
+                                } else echo "<td>$KUZA_24lo;</td>" ?>
+                    <td><?php echo $KUZA_dewp; ?></td> 
+                    <td><?php echo $KUZA_temp-$KUZA_dewp; ?></td> 
+                    <td><?php echo $KUZA_1pcp; ?></td>
+                    <td><?php echo $KUZA_3pcp; ?></td>
+                    <td><?php echo $KUZA_6pcp; ?></td>
+                    <td><?php echo $KUZA_24pc; ?></td>
+                    <td><?php echo $KUZA_wdir; ?> <?php echo $KUZA_wind; ?></td>
+                    <td><?php echo $KUZA_visi; ?></td> 
+                    <td><?php echo $KUZA_metr; ?></td> 
+                </tr>
+
+            </table>
+            
+            
+            
+            
