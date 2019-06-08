@@ -1,0 +1,3193 @@
+<?php
+
+// Pull ASOS API data:
+$apiPull = file_get_contents("https://api.synopticdata.com/v2/stations/nearesttime?&token=b0b6f4798ee945bcab5c743a02626b4c&within=1440&stid=KAKH,KAND,KAVL,KBUY,KCAE,KCEU,KCHS,KCLT,KCRE,KCUB,KECG,KEQY,KEWN,KFAY,KFLO,KGMU,KGRD,KGSO,KGSP,KHKY,KHSE,KILM,KINT,KMEB,KMRH,KOGB,KRDU,KRWI,KUZA&timeformat=%25Y%25m%25d&obtimezone=local&units=english&output=json");
+
+// Pull NC AWOS API data:
+$apiPull2 = file_get_contents("https://api.synopticdata.com/v2/stations/nearesttime?&token=b0b6f4798ee945bcab5c743a02626b4c&within=1440&stid=K1A5,K24A,K7W6,KAFP,KASJ,KCPC,KCTZ,KDPL,KEDE,KEHO,KETC,KEXX,KEYF,KFFA,KFQD,KGEV,KGWW,KHBI,KHNZ,KHRJ,KIPJ,KISO,KIXA,KJNX,KJQF,KLHZ,KMQI,KMRN,KMWK,KOAJ,KOCW,KONX,KPGV,KRCZ,KRHP,KRUQ,KSCR,KSIF,KSOP,KSUT,KSVH,KTDF,KTTA,KUKF,KVUJ&timeformat=%25Y%25m%25d&obtimezone=local&units=english&output=json");
+
+    // NOTE: Per NWS Wilmington, KLBT will not be operational until an unspecified time in 2020. Excludes KLBT from API query
+
+// Convert JSON => object
+$data = json_decode($apiPull,TRUE);
+$data2 = json_decode($apiPull2,TRUE);
+
+// Time
+date_default_timezone_set($data[STATION][0][TIMEZONE]);
+$time = $data[STATION][0][OBSERVATIONS][air_temp_value_1][date_time];
+
+// Define variables for each ASOS
+
+//
+//
+//
+// NC ASOS DATA
+//
+//
+//
+
+    $KAKH_cond = $data[STATION][0][OBSERVATIONS][weather_condition_value_1d][value];
+    $KAKH_temp = round($data[STATION][0][OBSERVATIONS][air_temp_value_1][value],0);
+    $KAKH_6hhi = round($data[STATION][0][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KAKH_24hi = round($data[STATION][0][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KAKH_6hlo = round($data[STATION][0][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KAKH_24lo = round($data[STATION][0][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KAKH_dewp = round($data[STATION][0][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KAKH_1pcp = round($data[STATION][0][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KAKH_3pcp = round($data[STATION][0][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KAKH_6pcp = round($data[STATION][0][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KAKH_24pc = round($data[STATION][0][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    $KAKH_wind = round($data[STATION][0][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KAKH_wdir = $data[STATION][0][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KAKH_visi = round($data[STATION][0][OBSERVATIONS][visibility_value_1][value],1);
+    $KAKH_metr = $data[STATION][0][OBSERVATIONS][metar_value_1][value];
+    
+    /*
+    $KAND_cond = $data[STATION][1][OBSERVATIONS][weather_condition_value_1d][value];
+    $KAND_temp = round($data[STATION][1][OBSERVATIONS][air_temp_value_1][value],0);
+    $KAND_6hhi = round($data[STATION][1][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KAND_6hlo = round($data[STATION][1][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KAND_dewp = round($data[STATION][1][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KAND_rain = round($data[STATION][1][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KAND_wind = round($data[STATION][1][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KAND_wdir = $data[STATION][1][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KAND_visi = round($data[STATION][1][OBSERVATIONS][visibility_value_1][value],1);
+    $KAND_metr = $data[STATION][1][OBSERVATIONS][metar_value_1][value];
+    $KAND_24hi = round($data[STATION][1][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KAND_24lo = round($data[STATION][1][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KAND_1pcp = round($data[STATION][1][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KAND_3pcp = round($data[STATION][1][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KAND_6pcp = round($data[STATION][1][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KAND_24pc = round($data[STATION][1][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KAVL_cond = $data[STATION][2][OBSERVATIONS][weather_condition_value_1d][value];
+    $KAVL_temp = round($data[STATION][2][OBSERVATIONS][air_temp_value_1][value],0);
+    $KAVL_6hhi = round($data[STATION][2][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KAVL_6hlo = round($data[STATION][2][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KAVL_dewp = round($data[STATION][2][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KAVL_rain = round($data[STATION][2][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KAVL_wind = round($data[STATION][2][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KAVL_wdir = $data[STATION][2][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KAVL_visi = round($data[STATION][2][OBSERVATIONS][visibility_value_1][value],1);
+    $KAVL_metr = $data[STATION][2][OBSERVATIONS][metar_value_1][value];
+    $KAVL_24hi = round($data[STATION][2][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KAVL_24lo = round($data[STATION][2][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KAVL_1pcp = round($data[STATION][2][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KAVL_3pcp = round($data[STATION][2][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KAVL_6pcp = round($data[STATION][2][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KAVL_24pc = round($data[STATION][2][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KBUY_cond = $data[STATION][3][OBSERVATIONS][weather_condition_value_1d][value];
+    $KBUY_temp = round($data[STATION][3][OBSERVATIONS][air_temp_value_1][value],0);
+    $KBUY_6hhi = round($data[STATION][3][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KBUY_6hlo = round($data[STATION][3][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KBUY_dewp = round($data[STATION][3][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KBUY_rain = round($data[STATION][3][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KBUY_wind = round($data[STATION][3][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KBUY_wdir = $data[STATION][3][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KBUY_visi = round($data[STATION][3][OBSERVATIONS][visibility_value_1][value],1);
+    $KBUY_metr = $data[STATION][3][OBSERVATIONS][metar_value_1][value];
+    $KBUY_24hi = round($data[STATION][3][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KBUY_24lo = round($data[STATION][3][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KBUY_1pcp = round($data[STATION][3][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KBUY_3pcp = round($data[STATION][3][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KBUY_6pcp = round($data[STATION][3][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KBUY_24pc = round($data[STATION][3][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KCAE_cond = $data[STATION][4][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCAE_temp = round($data[STATION][4][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCAE_6hhi = round($data[STATION][4][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCAE_6hlo = round($data[STATION][4][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCAE_dewp = round($data[STATION][4][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCAE_rain = round($data[STATION][4][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCAE_wind = round($data[STATION][4][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCAE_wdir = $data[STATION][4][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCAE_visi = round($data[STATION][4][OBSERVATIONS][visibility_value_1][value],1);
+    $KCAE_metr = $data[STATION][4][OBSERVATIONS][metar_value_1][value];
+    $KCAE_24hi = round($data[STATION][4][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCAE_24lo = round($data[STATION][4][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCAE_1pcp = round($data[STATION][4][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCAE_3pcp = round($data[STATION][4][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCAE_6pcp = round($data[STATION][4][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCAE_24pc = round($data[STATION][4][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+
+    $KCEU_cond = $data[STATION][5][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCEU_temp = round($data[STATION][5][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCEU_6hhi = round($data[STATION][5][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCEU_6hlo = round($data[STATION][5][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCEU_dewp = round($data[STATION][5][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCEU_rain = round($data[STATION][5][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCEU_wind = round($data[STATION][5][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCEU_wdir = $data[STATION][5][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCEU_visi = round($data[STATION][5][OBSERVATIONS][visibility_value_1][value],1);
+    $KCEU_metr = $data[STATION][5][OBSERVATIONS][metar_value_1][value];
+    $KCEU_24hi = round($data[STATION][5][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCEU_24lo = round($data[STATION][5][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCEU_1pcp = round($data[STATION][5][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCEU_3pcp = round($data[STATION][5][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCEU_6pcp = round($data[STATION][5][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCEU_24pc = round($data[STATION][5][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KCHS_cond = $data[STATION][6][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCHS_temp = round($data[STATION][6][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCHS_6hhi = round($data[STATION][6][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCHS_6hlo = round($data[STATION][6][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCHS_dewp = round($data[STATION][6][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCHS_rain = round($data[STATION][6][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCHS_wind = round($data[STATION][6][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCHS_wdir = $data[STATION][6][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCHS_visi = round($data[STATION][6][OBSERVATIONS][visibility_value_1][value],1);
+    $KCHS_metr = $data[STATION][6][OBSERVATIONS][metar_value_1][value];
+    $KCHS_24hi = round($data[STATION][6][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCHS_24lo = round($data[STATION][6][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCHS_1pcp = round($data[STATION][6][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCHS_3pcp = round($data[STATION][6][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCHS_6pcp = round($data[STATION][6][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCHS_24pc = round($data[STATION][6][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KCLT_cond = $data[STATION][7][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCLT_temp = round($data[STATION][7][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCLT_6hhi = round($data[STATION][7][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCLT_6hlo = round($data[STATION][7][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCLT_dewp = round($data[STATION][7][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCLT_rain = round($data[STATION][7][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCLT_wind = round($data[STATION][7][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCLT_wdir = $data[STATION][7][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCLT_visi = round($data[STATION][7][OBSERVATIONS][visibility_value_1][value],1);
+    $KCLT_metr = $data[STATION][7][OBSERVATIONS][metar_value_1][value];
+    $KCLT_24hi = round($data[STATION][7][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCLT_24lo = round($data[STATION][7][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCLT_1pcp = round($data[STATION][7][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCLT_3pcp = round($data[STATION][7][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCLT_6pcp = round($data[STATION][7][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCLT_24pc = round($data[STATION][7][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KCRE_cond = $data[STATION][8][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCRE_temp = round($data[STATION][8][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCRE_6hhi = round($data[STATION][8][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCRE_6hlo = round($data[STATION][8][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCRE_dewp = round($data[STATION][8][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCRE_rain = round($data[STATION][8][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCRE_wind = round($data[STATION][8][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCRE_wdir = $data[STATION][8][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCRE_visi = round($data[STATION][8][OBSERVATIONS][visibility_value_1][value],1);
+    $KCRE_metr = $data[STATION][8][OBSERVATIONS][metar_value_1][value];
+    $KCRE_24hi = round($data[STATION][8][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCRE_24lo = round($data[STATION][8][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCRE_1pcp = round($data[STATION][8][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCRE_3pcp = round($data[STATION][8][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCRE_6pcp = round($data[STATION][8][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCRE_24pc = round($data[STATION][8][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KCUB_cond = $data[STATION][9][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCUB_temp = round($data[STATION][9][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCUB_6hhi = round($data[STATION][9][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCUB_6hlo = round($data[STATION][9][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCUB_dewp = round($data[STATION][9][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCUB_rain = round($data[STATION][9][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCUB_wind = round($data[STATION][9][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCUB_wdir = $data[STATION][9][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCUB_visi = round($data[STATION][9][OBSERVATIONS][visibility_value_1][value],1);
+    $KCUB_metr = $data[STATION][9][OBSERVATIONS][metar_value_1][value];
+    $KCUB_24hi = round($data[STATION][9][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCUB_24lo = round($data[STATION][9][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCUB_1pcp = round($data[STATION][9][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCUB_3pcp = round($data[STATION][9][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCUB_6pcp = round($data[STATION][9][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCUB_24pc = round($data[STATION][9][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KECG_cond = $data[STATION][10][OBSERVATIONS][weather_condition_value_1d][value];
+    $KECG_temp = round($data[STATION][10][OBSERVATIONS][air_temp_value_1][value],0);
+    $KECG_6hhi = round($data[STATION][10][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KECG_6hlo = round($data[STATION][10][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KECG_dewp = round($data[STATION][10][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KECG_rain = round($data[STATION][10][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KECG_wind = round($data[STATION][10][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KECG_wdir = $data[STATION][10][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KECG_visi = round($data[STATION][10][OBSERVATIONS][visibility_value_1][value],1);
+    $KECG_metr = $data[STATION][10][OBSERVATIONS][metar_value_1][value];
+    $KECG_24hi = round($data[STATION][10][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KECG_24lo = round($data[STATION][10][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KECG_1pcp = round($data[STATION][10][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KECG_3pcp = round($data[STATION][10][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KECG_6pcp = round($data[STATION][10][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KECG_24pc = round($data[STATION][10][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEQY_cond = $data[STATION][11][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEQY_temp = round($data[STATION][11][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEQY_6hhi = round($data[STATION][11][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEQY_6hlo = round($data[STATION][11][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEQY_dewp = round($data[STATION][11][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEQY_rain = round($data[STATION][11][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEQY_wind = round($data[STATION][11][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEQY_wdir = $data[STATION][11][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEQY_visi = round($data[STATION][11][OBSERVATIONS][visibility_value_1][value],1);
+    $KEQY_metr = $data[STATION][11][OBSERVATIONS][metar_value_1][value];
+    $KEQY_24hi = round($data[STATION][11][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEQY_24lo = round($data[STATION][11][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEQY_1pcp = round($data[STATION][11][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEQY_3pcp = round($data[STATION][11][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEQY_6pcp = round($data[STATION][11][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEQY_24pc = round($data[STATION][11][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEWN_cond = $data[STATION][12][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEWN_temp = round($data[STATION][12][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEWN_6hhi = round($data[STATION][12][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEWN_6hlo = round($data[STATION][12][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEWN_dewp = round($data[STATION][12][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEWN_rain = round($data[STATION][12][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEWN_wind = round($data[STATION][12][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEWN_wdir = $data[STATION][12][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEWN_visi = round($data[STATION][12][OBSERVATIONS][visibility_value_1][value],1);
+    $KEWN_metr = $data[STATION][12][OBSERVATIONS][metar_value_1][value];
+    $KEWN_24hi = round($data[STATION][12][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEWN_24lo = round($data[STATION][12][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEWN_1pcp = round($data[STATION][12][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEWN_3pcp = round($data[STATION][12][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEWN_6pcp = round($data[STATION][12][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEWN_24pc = round($data[STATION][12][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KFAY_cond = $data[STATION][13][OBSERVATIONS][weather_condition_value_1d][value];
+    $KFAY_temp = round($data[STATION][13][OBSERVATIONS][air_temp_value_1][value],0);
+    $KFAY_6hhi = round($data[STATION][13][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KFAY_6hlo = round($data[STATION][13][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KFAY_dewp = round($data[STATION][13][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KFAY_rain = round($data[STATION][13][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFAY_wind = round($data[STATION][13][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KFAY_wdir = $data[STATION][13][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KFAY_visi = round($data[STATION][13][OBSERVATIONS][visibility_value_1][value],1);
+    $KFAY_metr = $data[STATION][13][OBSERVATIONS][metar_value_1][value];
+    $KFAY_24hi = round($data[STATION][13][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KFAY_24lo = round($data[STATION][13][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KFAY_1pcp = round($data[STATION][13][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KFAY_3pcp = round($data[STATION][13][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFAY_6pcp = round($data[STATION][13][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KFAY_24pc = round($data[STATION][13][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KFLO_cond = $data[STATION][14][OBSERVATIONS][weather_condition_value_1d][value];
+    $KFLO_temp = round($data[STATION][14][OBSERVATIONS][air_temp_value_1][value],0);
+    $KFLO_6hhi = round($data[STATION][14][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KFLO_6hlo = round($data[STATION][14][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KFLO_dewp = round($data[STATION][14][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KFLO_rain = round($data[STATION][14][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFLO_wind = round($data[STATION][14][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KFLO_wdir = $data[STATION][14][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KFLO_visi = round($data[STATION][14][OBSERVATIONS][visibility_value_1][value],1);
+    $KFLO_metr = $data[STATION][14][OBSERVATIONS][metar_value_1][value];
+    $KFLO_24hi = round($data[STATION][14][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KFLO_24lo = round($data[STATION][14][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KFLO_1pcp = round($data[STATION][14][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KFLO_3pcp = round($data[STATION][14][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFLO_6pcp = round($data[STATION][14][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KFLO_24pc = round($data[STATION][14][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KGMU_cond = $data[STATION][15][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGMU_temp = round($data[STATION][15][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGMU_6hhi = round($data[STATION][15][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGMU_6hlo = round($data[STATION][15][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGMU_dewp = round($data[STATION][15][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGMU_rain = round($data[STATION][15][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGMU_wind = round($data[STATION][15][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGMU_wdir = $data[STATION][15][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGMU_visi = round($data[STATION][15][OBSERVATIONS][visibility_value_1][value],1);
+    $KGMU_metr = $data[STATION][15][OBSERVATIONS][metar_value_1][value];
+    $KGMU_24hi = round($data[STATION][15][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGMU_24lo = round($data[STATION][15][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGMU_1pcp = round($data[STATION][15][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGMU_3pcp = round($data[STATION][15][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGMU_6pcp = round($data[STATION][15][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGMU_24pc = round($data[STATION][15][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KGRD_cond = $data[STATION][16][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGRD_temp = round($data[STATION][16][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGRD_6hhi = round($data[STATION][16][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGRD_6hlo = round($data[STATION][16][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGRD_dewp = round($data[STATION][16][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGRD_rain = round($data[STATION][16][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGRD_wind = round($data[STATION][16][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGRD_wdir = $data[STATION][16][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGRD_visi = round($data[STATION][16][OBSERVATIONS][visibility_value_1][value],1);
+    $KGRD_metr = $data[STATION][16][OBSERVATIONS][metar_value_1][value];
+    $KGRD_24hi = round($data[STATION][16][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGRD_24lo = round($data[STATION][16][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGRD_1pcp = round($data[STATION][16][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGRD_3pcp = round($data[STATION][16][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGRD_6pcp = round($data[STATION][16][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGRD_24pc = round($data[STATION][16][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KGSO_cond = $data[STATION][17][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGSO_temp = round($data[STATION][17][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGSO_6hhi = round($data[STATION][17][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGSO_6hlo = round($data[STATION][17][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGSO_dewp = round($data[STATION][17][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGSO_rain = round($data[STATION][17][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGSO_wind = round($data[STATION][17][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGSO_wdir = $data[STATION][17][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGSO_visi = round($data[STATION][17][OBSERVATIONS][visibility_value_1][value],1);
+    $KGSO_metr = $data[STATION][17][OBSERVATIONS][metar_value_1][value];
+    $KGSO_24hi = round($data[STATION][17][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGSO_24lo = round($data[STATION][17][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGSO_1pcp = round($data[STATION][17][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGSO_3pcp = round($data[STATION][17][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGSO_6pcp = round($data[STATION][17][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGSO_24pc = round($data[STATION][17][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KGSP_cond = $data[STATION][18][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGSP_temp = round($data[STATION][18][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGSP_6hhi = round($data[STATION][18][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGSP_6hlo = round($data[STATION][18][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGSP_dewp = round($data[STATION][18][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGSP_rain = round($data[STATION][18][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGSP_wind = round($data[STATION][18][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGSP_wdir = $data[STATION][18][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGSP_visi = round($data[STATION][18][OBSERVATIONS][visibility_value_1][value],1);
+    $KGSP_metr = $data[STATION][18][OBSERVATIONS][metar_value_1][value];
+    $KGSP_24hi = round($data[STATION][18][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGSP_24lo = round($data[STATION][18][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGSP_1pcp = round($data[STATION][18][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGSP_3pcp = round($data[STATION][18][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGSP_6pcp = round($data[STATION][18][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGSP_24pc = round($data[STATION][18][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KHKY_cond = $data[STATION][19][OBSERVATIONS][weather_condition_value_1d][value];
+    $KHKY_temp = round($data[STATION][19][OBSERVATIONS][air_temp_value_1][value],0);
+    $KHKY_6hhi = round($data[STATION][19][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KHKY_6hlo = round($data[STATION][19][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KHKY_dewp = round($data[STATION][19][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KHKY_rain = round($data[STATION][19][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHKY_wind = round($data[STATION][19][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KHKY_wdir = $data[STATION][19][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KHKY_visi = round($data[STATION][19][OBSERVATIONS][visibility_value_1][value],1);
+    $KHKY_metr = $data[STATION][19][OBSERVATIONS][metar_value_1][value];
+    $KHKY_24hi = round($data[STATION][19][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KHKY_24lo = round($data[STATION][19][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KHKY_1pcp = round($data[STATION][19][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KHKY_3pcp = round($data[STATION][19][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHKY_6pcp = round($data[STATION][19][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KHKY_24pc = round($data[STATION][19][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KHSE_cond = $data[STATION][20][OBSERVATIONS][weather_condition_value_1d][value];
+    $KHSE_temp = round($data[STATION][20][OBSERVATIONS][air_temp_value_1][value],0);
+    $KHSE_6hhi = round($data[STATION][20][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KHSE_6hlo = round($data[STATION][20][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KHSE_dewp = round($data[STATION][20][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KHSE_rain = round($data[STATION][20][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHSE_wind = round($data[STATION][20][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KHSE_wdir = $data[STATION][20][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KHSE_visi = round($data[STATION][20][OBSERVATIONS][visibility_value_1][value],1);
+    $KHSE_metr = $data[STATION][20][OBSERVATIONS][metar_value_1][value];
+    $KHSE_24hi = round($data[STATION][20][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KHSE_24lo = round($data[STATION][20][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KHSE_1pcp = round($data[STATION][20][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KHSE_3pcp = round($data[STATION][20][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHSE_6pcp = round($data[STATION][20][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KHSE_24pc = round($data[STATION][20][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KILM_cond = $data[STATION][21][OBSERVATIONS][weather_condition_value_1d][value];
+    $KILM_temp = round($data[STATION][21][OBSERVATIONS][air_temp_value_1][value],0);
+    $KILM_6hhi = round($data[STATION][21][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KILM_6hlo = round($data[STATION][21][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KILM_dewp = round($data[STATION][21][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KILM_rain = round($data[STATION][21][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KILM_wind = round($data[STATION][21][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KILM_wdir = $data[STATION][21][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KILM_visi = round($data[STATION][21][OBSERVATIONS][visibility_value_1][value],1);
+    $KILM_metr = $data[STATION][21][OBSERVATIONS][metar_value_1][value];
+    $KILM_24hi = round($data[STATION][21][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KILM_24lo = round($data[STATION][21][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KILM_1pcp = round($data[STATION][21][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KILM_3pcp = round($data[STATION][21][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KILM_6pcp = round($data[STATION][21][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KILM_24pc = round($data[STATION][21][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KINT_cond = $data[STATION][22][OBSERVATIONS][weather_condition_value_1d][value];
+    $KINT_temp = round($data[STATION][22][OBSERVATIONS][air_temp_value_1][value],0);
+    $KINT_6hhi = round($data[STATION][22][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KINT_6hlo = round($data[STATION][22][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KINT_dewp = round($data[STATION][22][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KINT_rain = round($data[STATION][22][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KINT_wind = round($data[STATION][22][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KINT_wdir = $data[STATION][22][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KINT_visi = round($data[STATION][22][OBSERVATIONS][visibility_value_1][value],1);
+    $KINT_metr = $data[STATION][22][OBSERVATIONS][metar_value_1][value];
+    $KINT_24hi = round($data[STATION][22][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KINT_24lo = round($data[STATION][22][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KINT_1pcp = round($data[STATION][22][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KINT_3pcp = round($data[STATION][22][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KINT_6pcp = round($data[STATION][22][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KINT_24pc = round($data[STATION][22][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KMEB_cond = $data[STATION][23][OBSERVATIONS][weather_condition_value_1d][value];
+    $KMEB_temp = round($data[STATION][23][OBSERVATIONS][air_temp_value_1][value],0);
+    $KMEB_6hhi = round($data[STATION][23][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KMEB_6hlo = round($data[STATION][23][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KMEB_dewp = round($data[STATION][23][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KMEB_rain = round($data[STATION][23][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMEB_wind = round($data[STATION][23][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KMEB_wdir = $data[STATION][23][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KMEB_visi = round($data[STATION][23][OBSERVATIONS][visibility_value_1][value],1);
+    $KMEB_metr = $data[STATION][23][OBSERVATIONS][metar_value_1][value];
+    $KMEB_24hi = round($data[STATION][23][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KMEB_24lo = round($data[STATION][23][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KMEB_1pcp = round($data[STATION][23][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KMEB_3pcp = round($data[STATION][23][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMEB_6pcp = round($data[STATION][23][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KMEB_24pc = round($data[STATION][23][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KMRH_cond = $data[STATION][24][OBSERVATIONS][weather_condition_value_1d][value];
+    $KMRH_temp = round($data[STATION][24][OBSERVATIONS][air_temp_value_1][value],0);
+    $KMRH_6hhi = round($data[STATION][24][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KMRH_6hlo = round($data[STATION][24][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KMRH_dewp = round($data[STATION][24][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KMRH_rain = round($data[STATION][24][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMRH_wind = round($data[STATION][24][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KMRH_wdir = $data[STATION][24][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KMRH_visi = round($data[STATION][24][OBSERVATIONS][visibility_value_1][value],1);
+    $KMRH_metr = $data[STATION][24][OBSERVATIONS][metar_value_1][value];
+    $KMRH_24hi = round($data[STATION][24][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KMRH_24lo = round($data[STATION][24][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KMRH_1pcp = round($data[STATION][24][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KMRH_3pcp = round($data[STATION][24][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMRH_6pcp = round($data[STATION][24][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KMRH_24pc = round($data[STATION][24][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KOGB_cond = $data[STATION][25][OBSERVATIONS][weather_condition_value_1d][value];
+    $KOGB_temp = round($data[STATION][25][OBSERVATIONS][air_temp_value_1][value],0);
+    $KOGB_6hhi = round($data[STATION][25][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KOGB_6hlo = round($data[STATION][25][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KOGB_dewp = round($data[STATION][25][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KOGB_rain = round($data[STATION][25][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOGB_wind = round($data[STATION][25][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KOGB_wdir = $data[STATION][25][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KOGB_visi = round($data[STATION][25][OBSERVATIONS][visibility_value_1][value],1);
+    $KOGB_metr = $data[STATION][25][OBSERVATIONS][metar_value_1][value];
+    $KOGB_24hi = round($data[STATION][25][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KOGB_24lo = round($data[STATION][25][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KOGB_1pcp = round($data[STATION][25][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KOGB_3pcp = round($data[STATION][25][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOGB_6pcp = round($data[STATION][25][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KOGB_24pc = round($data[STATION][25][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+    $KRDU_cond = $data[STATION][26][OBSERVATIONS][weather_condition_value_1d][value];
+    $KRDU_temp = round($data[STATION][26][OBSERVATIONS][air_temp_value_1][value],0);
+    $KRDU_6hhi = round($data[STATION][26][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KRDU_6hlo = round($data[STATION][26][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KRDU_dewp = round($data[STATION][26][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KRDU_rain = round($data[STATION][26][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRDU_wind = round($data[STATION][26][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KRDU_wdir = $data[STATION][26][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KRDU_visi = round($data[STATION][26][OBSERVATIONS][visibility_value_1][value],1);
+    $KRDU_metr = $data[STATION][26][OBSERVATIONS][metar_value_1][value];
+    $KRDU_24hi = round($data[STATION][26][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KRDU_24lo = round($data[STATION][26][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KRDU_1pcp = round($data[STATION][26][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KRDU_3pcp = round($data[STATION][26][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRDU_6pcp = round($data[STATION][26][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KRDU_24pc = round($data[STATION][26][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KRWI_cond = $data[STATION][27][OBSERVATIONS][weather_condition_value_1d][value];
+    $KRWI_temp = round($data[STATION][27][OBSERVATIONS][air_temp_value_1][value],0);
+    $KRWI_6hhi = round($data[STATION][27][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KRWI_6hlo = round($data[STATION][27][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KRWI_dewp = round($data[STATION][27][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KRWI_rain = round($data[STATION][27][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRWI_wind = round($data[STATION][27][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KRWI_wdir = $data[STATION][27][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KRWI_visi = round($data[STATION][27][OBSERVATIONS][visibility_value_1][value],1);
+    $KRWI_metr = $data[STATION][27][OBSERVATIONS][metar_value_1][value];
+    $KRWI_24hi = round($data[STATION][27][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KRWI_24lo = round($data[STATION][27][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KRWI_1pcp = round($data[STATION][27][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KRWI_3pcp = round($data[STATION][27][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRWI_6pcp = round($data[STATION][27][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KRWI_24pc = round($data[STATION][27][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    /*
+    $KUZA_cond = $data[STATION][28][OBSERVATIONS][weather_condition_value_1d][value];
+    $KUZA_temp = round($data[STATION][28][OBSERVATIONS][air_temp_value_1][value],0);
+    $KUZA_6hhi = round($data[STATION][28][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KUZA_6hlo = round($data[STATION][28][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KUZA_dewp = round($data[STATION][28][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KUZA_rain = round($data[STATION][28][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KUZA_wind = round($data[STATION][28][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KUZA_wdir = $data[STATION][28][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KUZA_visi = round($data[STATION][28][OBSERVATIONS][visibility_value_1][value],1);
+    $KUZA_metr = $data[STATION][28][OBSERVATIONS][metar_value_1][value];
+    $KUZA_24hi = round($data[STATION][28][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KUZA_24lo = round($data[STATION][28][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KUZA_1pcp = round($data[STATION][28][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KUZA_3pcp = round($data[STATION][28][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KUZA_6pcp = round($data[STATION][28][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KUZA_24pc = round($data[STATION][28][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    */
+    
+//
+//
+//
+// NC AWOS DATA
+//
+//
+//
+
+    $KASJ_cond = $data2[STATION][0][OBSERVATIONS][weather_condition_value_1d][value];
+    $KASJ_temp = round($data2[STATION][0][OBSERVATIONS][air_temp_value_1][value],0);
+    $KASJ_6hhi = round($data2[STATION][0][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KASJ_6hlo = round($data2[STATION][0][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KASJ_dewp = round($data2[STATION][0][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KASJ_rain = round($data2[STATION][0][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KASJ_wind = round($data2[STATION][0][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KASJ_wdir = $data2[STATION][0][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KASJ_visi = round($data2[STATION][0][OBSERVATIONS][visibility_value_1][value],1);
+    $KASJ_metr = $data2[STATION][0][OBSERVATIONS][metar_value_1][value];
+    $KASJ_24hi = round($data2[STATION][0][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KASJ_24lo = round($data2[STATION][0][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KASJ_1pcp = round($data2[STATION][0][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KASJ_3pcp = round($data2[STATION][0][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KASJ_6pcp = round($data2[STATION][0][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KASJ_24pc = round($data2[STATION][0][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KCPC_cond = $data2[STATION][1][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCPC_temp = round($data2[STATION][1][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCPC_6hhi = round($data2[STATION][1][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCPC_6hlo = round($data2[STATION][1][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCPC_dewp = round($data2[STATION][1][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCPC_rain = round($data2[STATION][1][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCPC_wind = round($data2[STATION][1][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCPC_wdir = $data2[STATION][1][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCPC_visi = round($data2[STATION][1][OBSERVATIONS][visibility_value_1][value],1);
+    $KCPC_metr = $data2[STATION][1][OBSERVATIONS][metar_value_1][value];
+    $KCPC_24hi = round($data2[STATION][1][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCPC_24lo = round($data2[STATION][1][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCPC_1pcp = round($data2[STATION][1][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCPC_3pcp = round($data2[STATION][1][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCPC_6pcp = round($data2[STATION][1][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCPC_24pc = round($data2[STATION][1][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KCTZ_cond = $data2[STATION][2][OBSERVATIONS][weather_condition_value_1d][value];
+    $KCTZ_temp = round($data2[STATION][2][OBSERVATIONS][air_temp_value_1][value],0);
+    $KCTZ_6hhi = round($data2[STATION][2][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KCTZ_6hlo = round($data2[STATION][2][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KCTZ_dewp = round($data2[STATION][2][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KCTZ_rain = round($data2[STATION][2][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCTZ_wind = round($data2[STATION][2][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KCTZ_wdir = $data2[STATION][2][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KCTZ_visi = round($data2[STATION][2][OBSERVATIONS][visibility_value_1][value],1);
+    $KCTZ_metr = $data2[STATION][2][OBSERVATIONS][metar_value_1][value];
+    $KCTZ_24hi = round($data2[STATION][2][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KCTZ_24lo = round($data2[STATION][2][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KCTZ_1pcp = round($data2[STATION][2][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KCTZ_3pcp = round($data2[STATION][2][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KCTZ_6pcp = round($data2[STATION][2][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KCTZ_24pc = round($data2[STATION][2][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KDPL_cond = $data2[STATION][3][OBSERVATIONS][weather_condition_value_1d][value];
+    $KDPL_temp = round($data2[STATION][3][OBSERVATIONS][air_temp_value_1][value],0);
+    $KDPL_6hhi = round($data2[STATION][3][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KDPL_6hlo = round($data2[STATION][3][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KDPL_dewp = round($data2[STATION][3][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KDPL_rain = round($data2[STATION][3][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KDPL_wind = round($data2[STATION][3][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KDPL_wdir = $data2[STATION][3][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KDPL_visi = round($data2[STATION][3][OBSERVATIONS][visibility_value_1][value],1);
+    $KDPL_metr = $data2[STATION][3][OBSERVATIONS][metar_value_1][value];
+    $KDPL_24hi = round($data2[STATION][3][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KDPL_24lo = round($data2[STATION][3][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KDPL_1pcp = round($data2[STATION][3][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KDPL_3pcp = round($data2[STATION][3][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KDPL_6pcp = round($data2[STATION][3][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KDPL_24pc = round($data2[STATION][3][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEDE_cond = $data2[STATION][4][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEDE_temp = round($data2[STATION][4][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEDE_6hhi = round($data2[STATION][4][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEDE_6hlo = round($data2[STATION][4][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEDE_dewp = round($data2[STATION][4][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEDE_rain = round($data2[STATION][4][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEDE_wind = round($data2[STATION][4][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEDE_wdir = $data2[STATION][4][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEDE_visi = round($data2[STATION][4][OBSERVATIONS][visibility_value_1][value],1);
+    $KEDE_metr = $data2[STATION][4][OBSERVATIONS][metar_value_1][value];
+    $KEDE_24hi = round($data2[STATION][4][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEDE_24lo = round($data2[STATION][4][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEDE_1pcp = round($data2[STATION][4][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEDE_3pcp = round($data2[STATION][4][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEDE_6pcp = round($data2[STATION][4][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEDE_24pc = round($data2[STATION][4][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEXX_cond = $data2[STATION][5][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEXX_temp = round($data2[STATION][5][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEXX_6hhi = round($data2[STATION][5][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEXX_6hlo = round($data2[STATION][5][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEXX_dewp = round($data2[STATION][5][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEXX_rain = round($data2[STATION][5][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEXX_wind = round($data2[STATION][5][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEXX_wdir = $data2[STATION][5][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEXX_visi = round($data2[STATION][5][OBSERVATIONS][visibility_value_1][value],1);
+    $KEXX_metr = $data2[STATION][5][OBSERVATIONS][metar_value_1][value];
+    $KEXX_24hi = round($data2[STATION][5][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEXX_24lo = round($data2[STATION][5][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEXX_1pcp = round($data2[STATION][5][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEXX_3pcp = round($data2[STATION][5][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEXX_6pcp = round($data2[STATION][5][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEXX_24pc = round($data2[STATION][5][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KFQD_cond = $data2[STATION][6][OBSERVATIONS][weather_condition_value_1d][value];
+    $KFQD_temp = round($data2[STATION][6][OBSERVATIONS][air_temp_value_1][value],0);
+    $KFQD_6hhi = round($data2[STATION][6][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KFQD_6hlo = round($data2[STATION][6][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KFQD_dewp = round($data2[STATION][6][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KFQD_rain = round($data2[STATION][6][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFQD_wind = round($data2[STATION][6][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KFQD_wdir = $data2[STATION][6][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KFQD_visi = round($data2[STATION][6][OBSERVATIONS][visibility_value_1][value],1);
+    $KFQD_metr = $data2[STATION][6][OBSERVATIONS][metar_value_1][value];
+    $KFQD_24hi = round($data2[STATION][6][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KFQD_24lo = round($data2[STATION][6][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KFQD_1pcp = round($data2[STATION][6][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KFQD_3pcp = round($data2[STATION][6][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFQD_6pcp = round($data2[STATION][6][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KFQD_24pc = round($data2[STATION][6][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KGEV_cond = $data2[STATION][7][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGEV_temp = round($data2[STATION][7][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGEV_6hhi = round($data2[STATION][7][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGEV_6hlo = round($data2[STATION][7][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGEV_dewp = round($data2[STATION][7][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGEV_rain = round($data2[STATION][7][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGEV_wind = round($data2[STATION][7][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGEV_wdir = $data2[STATION][7][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGEV_visi = round($data2[STATION][7][OBSERVATIONS][visibility_value_1][value],1);
+    $KGEV_metr = $data2[STATION][7][OBSERVATIONS][metar_value_1][value];
+    $KGEV_24hi = round($data2[STATION][7][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGEV_24lo = round($data2[STATION][7][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGEV_1pcp = round($data2[STATION][7][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGEV_3pcp = round($data2[STATION][7][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGEV_6pcp = round($data2[STATION][7][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGEV_24pc = round($data2[STATION][7][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KGWW_cond = $data2[STATION][8][OBSERVATIONS][weather_condition_value_1d][value];
+    $KGWW_temp = round($data2[STATION][8][OBSERVATIONS][air_temp_value_1][value],0);
+    $KGWW_6hhi = round($data2[STATION][8][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KGWW_6hlo = round($data2[STATION][8][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KGWW_dewp = round($data2[STATION][8][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KGWW_rain = round($data2[STATION][8][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGWW_wind = round($data2[STATION][8][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KGWW_wdir = $data2[STATION][8][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KGWW_visi = round($data2[STATION][8][OBSERVATIONS][visibility_value_1][value],1);
+    $KGWW_metr = $data2[STATION][8][OBSERVATIONS][metar_value_1][value];
+    $KGWW_24hi = round($data2[STATION][8][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KGWW_24lo = round($data2[STATION][8][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KGWW_1pcp = round($data2[STATION][8][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KGWW_3pcp = round($data2[STATION][8][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KGWW_6pcp = round($data2[STATION][8][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KGWW_24pc = round($data2[STATION][8][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KHBI_cond = $data2[STATION][9][OBSERVATIONS][weather_condition_value_1d][value];
+    $KHBI_temp = round($data2[STATION][9][OBSERVATIONS][air_temp_value_1][value],0);
+    $KHBI_6hhi = round($data2[STATION][9][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KHBI_6hlo = round($data2[STATION][9][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KHBI_dewp = round($data2[STATION][9][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KHBI_rain = round($data2[STATION][9][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHBI_wind = round($data2[STATION][9][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KHBI_wdir = $data2[STATION][9][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KHBI_visi = round($data2[STATION][9][OBSERVATIONS][visibility_value_1][value],1);
+    $KHBI_metr = $data2[STATION][9][OBSERVATIONS][metar_value_1][value];
+    $KHBI_24hi = round($data2[STATION][9][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KHBI_24lo = round($data2[STATION][9][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KHBI_1pcp = round($data2[STATION][9][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KHBI_3pcp = round($data2[STATION][9][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHBI_6pcp = round($data2[STATION][9][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KHBI_24pc = round($data2[STATION][9][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KHNZ_cond = $data2[STATION][10][OBSERVATIONS][weather_condition_value_1d][value];
+    $KHNZ_temp = round($data2[STATION][10][OBSERVATIONS][air_temp_value_1][value],0);
+    $KHNZ_6hhi = round($data2[STATION][10][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KHNZ_6hlo = round($data2[STATION][10][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KHNZ_dewp = round($data2[STATION][10][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KHNZ_rain = round($data2[STATION][10][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHNZ_wind = round($data2[STATION][10][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KHNZ_wdir = $data2[STATION][10][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KHNZ_visi = round($data2[STATION][10][OBSERVATIONS][visibility_value_1][value],1);
+    $KHNZ_metr = $data2[STATION][10][OBSERVATIONS][metar_value_1][value];
+    $KHNZ_24hi = round($data2[STATION][10][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KHNZ_24lo = round($data2[STATION][10][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KHNZ_1pcp = round($data2[STATION][10][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KHNZ_3pcp = round($data2[STATION][10][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHNZ_6pcp = round($data2[STATION][10][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KHNZ_24pc = round($data2[STATION][10][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KHRJ_cond = $data2[STATION][11][OBSERVATIONS][weather_condition_value_1d][value];
+    $KHRJ_temp = round($data2[STATION][11][OBSERVATIONS][air_temp_value_1][value],0);
+    $KHRJ_6hhi = round($data2[STATION][11][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KHRJ_6hlo = round($data2[STATION][11][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KHRJ_dewp = round($data2[STATION][11][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KHRJ_rain = round($data2[STATION][11][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHRJ_wind = round($data2[STATION][11][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KHRJ_wdir = $data2[STATION][11][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KHRJ_visi = round($data2[STATION][11][OBSERVATIONS][visibility_value_1][value],1);
+    $KHRJ_metr = $data2[STATION][11][OBSERVATIONS][metar_value_1][value];
+    $KHRJ_24hi = round($data2[STATION][11][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KHRJ_24lo = round($data2[STATION][11][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KHRJ_1pcp = round($data2[STATION][11][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KHRJ_3pcp = round($data2[STATION][11][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KHRJ_6pcp = round($data2[STATION][11][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KHRJ_24pc = round($data2[STATION][11][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KIPJ_cond = $data2[STATION][12][OBSERVATIONS][weather_condition_value_1d][value];
+    $KIPJ_temp = round($data2[STATION][12][OBSERVATIONS][air_temp_value_1][value],0);
+    $KIPJ_6hhi = round($data2[STATION][12][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KIPJ_6hlo = round($data2[STATION][12][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KIPJ_dewp = round($data2[STATION][12][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KIPJ_rain = round($data2[STATION][12][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KIPJ_wind = round($data2[STATION][12][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KIPJ_wdir = $data2[STATION][12][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KIPJ_visi = round($data2[STATION][12][OBSERVATIONS][visibility_value_1][value],1);
+    $KIPJ_metr = $data2[STATION][12][OBSERVATIONS][metar_value_1][value];
+    $KIPJ_24hi = round($data2[STATION][12][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KIPJ_24lo = round($data2[STATION][12][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KIPJ_1pcp = round($data2[STATION][12][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KIPJ_3pcp = round($data2[STATION][12][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KIPJ_6pcp = round($data2[STATION][12][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KIPJ_24pc = round($data2[STATION][12][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KISO_cond = $data2[STATION][13][OBSERVATIONS][weather_condition_value_1d][value];
+    $KISO_temp = round($data2[STATION][13][OBSERVATIONS][air_temp_value_1][value],0);
+    $KISO_6hhi = round($data2[STATION][13][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KISO_6hlo = round($data2[STATION][13][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KISO_dewp = round($data2[STATION][13][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KISO_rain = round($data2[STATION][13][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KISO_wind = round($data2[STATION][13][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KISO_wdir = $data2[STATION][13][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KISO_visi = round($data2[STATION][13][OBSERVATIONS][visibility_value_1][value],1);
+    $KISO_metr = $data2[STATION][13][OBSERVATIONS][metar_value_1][value];
+    $KISO_24hi = round($data2[STATION][13][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KISO_24lo = round($data2[STATION][13][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KISO_1pcp = round($data2[STATION][13][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KISO_3pcp = round($data2[STATION][13][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KISO_6pcp = round($data2[STATION][13][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KISO_24pc = round($data2[STATION][13][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KJNX_cond = $data2[STATION][14][OBSERVATIONS][weather_condition_value_1d][value];
+    $KJNX_temp = round($data2[STATION][14][OBSERVATIONS][air_temp_value_1][value],0);
+    $KJNX_6hhi = round($data2[STATION][14][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KJNX_6hlo = round($data2[STATION][14][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KJNX_dewp = round($data2[STATION][14][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KJNX_rain = round($data2[STATION][14][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KJNX_wind = round($data2[STATION][14][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KJNX_wdir = $data2[STATION][14][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KJNX_visi = round($data2[STATION][14][OBSERVATIONS][visibility_value_1][value],1);
+    $KJNX_metr = $data2[STATION][14][OBSERVATIONS][metar_value_1][value];
+    $KJNX_24hi = round($data2[STATION][14][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KJNX_24lo = round($data2[STATION][14][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KJNX_1pcp = round($data2[STATION][14][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KJNX_3pcp = round($data2[STATION][14][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KJNX_6pcp = round($data2[STATION][14][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KJNX_24pc = round($data2[STATION][14][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KJQF_cond = $data2[STATION][15][OBSERVATIONS][weather_condition_value_1d][value];
+    $KJQF_temp = round($data2[STATION][15][OBSERVATIONS][air_temp_value_1][value],0);
+    $KJQF_6hhi = round($data2[STATION][15][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KJQF_6hlo = round($data2[STATION][15][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KJQF_dewp = round($data2[STATION][15][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KJQF_rain = round($data2[STATION][15][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KJQF_wind = round($data2[STATION][15][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KJQF_wdir = $data2[STATION][15][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KJQF_visi = round($data2[STATION][15][OBSERVATIONS][visibility_value_1][value],1);
+    $KJQF_metr = $data2[STATION][15][OBSERVATIONS][metar_value_1][value];
+    $KJQF_24hi = round($data2[STATION][15][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KJQF_24lo = round($data2[STATION][15][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KJQF_1pcp = round($data2[STATION][15][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KJQF_3pcp = round($data2[STATION][15][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KJQF_6pcp = round($data2[STATION][15][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KJQF_24pc = round($data2[STATION][15][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KMQI_cond = $data2[STATION][16][OBSERVATIONS][weather_condition_value_1d][value];
+    $KMQI_temp = round($data2[STATION][16][OBSERVATIONS][air_temp_value_1][value],0);
+    $KMQI_6hhi = round($data2[STATION][16][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KMQI_6hlo = round($data2[STATION][16][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KMQI_dewp = round($data2[STATION][16][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KMQI_rain = round($data2[STATION][16][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMQI_wind = round($data2[STATION][16][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KMQI_wdir = $data2[STATION][16][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KMQI_visi = round($data2[STATION][16][OBSERVATIONS][visibility_value_1][value],1);
+    $KMQI_metr = $data2[STATION][16][OBSERVATIONS][metar_value_1][value];
+    $KMQI_24hi = round($data2[STATION][16][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KMQI_24lo = round($data2[STATION][16][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KMQI_1pcp = round($data2[STATION][16][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KMQI_3pcp = round($data2[STATION][16][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMQI_6pcp = round($data2[STATION][16][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KMQI_24pc = round($data2[STATION][16][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+
+    $KMRN_cond = $data2[STATION][17][OBSERVATIONS][weather_condition_value_1d][value];
+    $KMRN_temp = round($data2[STATION][17][OBSERVATIONS][air_temp_value_1][value],0);
+    $KMRN_6hhi = round($data2[STATION][17][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KMRN_6hlo = round($data2[STATION][17][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KMRN_dewp = round($data2[STATION][17][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KMRN_rain = round($data2[STATION][17][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMRN_wind = round($data2[STATION][17][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KMRN_wdir = $data2[STATION][17][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KMRN_visi = round($data2[STATION][17][OBSERVATIONS][visibility_value_1][value],1);
+    $KMRN_metr = $data2[STATION][17][OBSERVATIONS][metar_value_1][value];
+    $KMRN_24hi = round($data2[STATION][17][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KMRN_24lo = round($data2[STATION][17][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KMRN_1pcp = round($data2[STATION][17][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KMRN_3pcp = round($data2[STATION][17][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMRN_6pcp = round($data2[STATION][17][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KMRN_24pc = round($data2[STATION][17][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KMWK_cond = $data2[STATION][18][OBSERVATIONS][weather_condition_value_1d][value];
+    $KMWK_temp = round($data2[STATION][18][OBSERVATIONS][air_temp_value_1][value],0);
+    $KMWK_6hhi = round($data2[STATION][18][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KMWK_6hlo = round($data2[STATION][18][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KMWK_dewp = round($data2[STATION][18][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KMWK_rain = round($data2[STATION][18][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMWK_wind = round($data2[STATION][18][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KMWK_wdir = $data2[STATION][18][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KMWK_visi = round($data2[STATION][18][OBSERVATIONS][visibility_value_1][value],1);
+    $KMWK_metr = $data2[STATION][18][OBSERVATIONS][metar_value_1][value];
+    $KMWK_24hi = round($data2[STATION][18][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KMWK_24lo = round($data2[STATION][18][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KMWK_1pcp = round($data2[STATION][18][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KMWK_3pcp = round($data2[STATION][18][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KMWK_6pcp = round($data2[STATION][18][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KMWK_24pc = round($data2[STATION][18][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KOAJ_cond = $data2[STATION][19][OBSERVATIONS][weather_condition_value_1d][value];
+    $KOAJ_temp = round($data2[STATION][19][OBSERVATIONS][air_temp_value_1][value],0);
+    $KOAJ_6hhi = round($data2[STATION][19][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KOAJ_6hlo = round($data2[STATION][19][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KOAJ_dewp = round($data2[STATION][19][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KOAJ_rain = round($data2[STATION][19][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOAJ_wind = round($data2[STATION][19][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KOAJ_wdir = $data2[STATION][19][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KOAJ_visi = round($data2[STATION][19][OBSERVATIONS][visibility_value_1][value],1);
+    $KOAJ_metr = $data2[STATION][19][OBSERVATIONS][metar_value_1][value];
+    $KOAJ_24hi = round($data2[STATION][19][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KOAJ_24lo = round($data2[STATION][19][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KOAJ_1pcp = round($data2[STATION][19][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KOAJ_3pcp = round($data2[STATION][19][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOAJ_6pcp = round($data2[STATION][19][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KOAJ_24pc = round($data2[STATION][19][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KOCW_cond = $data2[STATION][20][OBSERVATIONS][weather_condition_value_1d][value];
+    $KOCW_temp = round($data2[STATION][20][OBSERVATIONS][air_temp_value_1][value],0);
+    $KOCW_6hhi = round($data2[STATION][20][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KOCW_6hlo = round($data2[STATION][20][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KOCW_dewp = round($data2[STATION][20][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KOCW_rain = round($data2[STATION][20][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOCW_wind = round($data2[STATION][20][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KOCW_wdir = $data2[STATION][20][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KOCW_visi = round($data2[STATION][20][OBSERVATIONS][visibility_value_1][value],1);
+    $KOCW_metr = $data2[STATION][20][OBSERVATIONS][metar_value_1][value];
+    $KOCW_24hi = round($data2[STATION][20][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KOCW_24lo = round($data2[STATION][20][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KOCW_1pcp = round($data2[STATION][20][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KOCW_3pcp = round($data2[STATION][20][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KOCW_6pcp = round($data2[STATION][20][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KOCW_24pc = round($data2[STATION][20][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KPGV_cond = $data2[STATION][21][OBSERVATIONS][weather_condition_value_1d][value];
+    $KPGV_temp = round($data2[STATION][21][OBSERVATIONS][air_temp_value_1][value],0);
+    $KPGV_6hhi = round($data2[STATION][21][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KPGV_6hlo = round($data2[STATION][21][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KPGV_dewp = round($data2[STATION][21][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KPGV_rain = round($data2[STATION][21][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KPGV_wind = round($data2[STATION][21][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KPGV_wdir = $data2[STATION][21][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KPGV_visi = round($data2[STATION][21][OBSERVATIONS][visibility_value_1][value],1);
+    $KPGV_metr = $data2[STATION][21][OBSERVATIONS][metar_value_1][value];
+    $KPGV_24hi = round($data2[STATION][21][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KPGV_24lo = round($data2[STATION][21][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KPGV_1pcp = round($data2[STATION][21][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KPGV_3pcp = round($data2[STATION][21][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KPGV_6pcp = round($data2[STATION][21][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KPGV_24pc = round($data2[STATION][21][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+
+    $KRHP_cond = $data2[STATION][22][OBSERVATIONS][weather_condition_value_1d][value];
+    $KRHP_temp = round($data2[STATION][22][OBSERVATIONS][air_temp_value_1][value],0);
+    $KRHP_6hhi = round($data2[STATION][22][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KRHP_6hlo = round($data2[STATION][22][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KRHP_dewp = round($data2[STATION][22][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KRHP_rain = round($data2[STATION][22][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRHP_wind = round($data2[STATION][22][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KRHP_wdir = $data2[STATION][22][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KRHP_visi = round($data2[STATION][22][OBSERVATIONS][visibility_value_1][value],1);
+    $KRHP_metr = $data2[STATION][22][OBSERVATIONS][metar_value_1][value];
+    $KRHP_24hi = round($data2[STATION][22][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KRHP_24lo = round($data2[STATION][22][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KRHP_1pcp = round($data2[STATION][22][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KRHP_3pcp = round($data2[STATION][22][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRHP_6pcp = round($data2[STATION][22][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KRHP_24pc = round($data2[STATION][22][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+
+    $KSOP_cond = $data2[STATION][23][OBSERVATIONS][weather_condition_value_1d][value];
+    $KSOP_temp = round($data2[STATION][23][OBSERVATIONS][air_temp_value_1][value],0);
+    $KSOP_6hhi = round($data2[STATION][23][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KSOP_6hlo = round($data2[STATION][23][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KSOP_dewp = round($data2[STATION][23][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KSOP_rain = round($data2[STATION][23][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSOP_wind = round($data2[STATION][23][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KSOP_wdir = $data2[STATION][23][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KSOP_visi = round($data2[STATION][23][OBSERVATIONS][visibility_value_1][value],1);
+    $KSOP_metr = $data2[STATION][23][OBSERVATIONS][metar_value_1][value];
+    $KSOP_24hi = round($data2[STATION][23][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KSOP_24lo = round($data2[STATION][23][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KSOP_1pcp = round($data2[STATION][23][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KSOP_3pcp = round($data2[STATION][23][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSOP_6pcp = round($data2[STATION][23][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KSOP_24pc = round($data2[STATION][23][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KSUT_cond = $data2[STATION][24][OBSERVATIONS][weather_condition_value_1d][value];
+    $KSUT_temp = round($data2[STATION][24][OBSERVATIONS][air_temp_value_1][value],0);
+    $KSUT_6hhi = round($data2[STATION][24][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KSUT_6hlo = round($data2[STATION][24][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KSUT_dewp = round($data2[STATION][24][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KSUT_rain = round($data2[STATION][24][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSUT_wind = round($data2[STATION][24][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KSUT_wdir = $data2[STATION][24][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KSUT_visi = round($data2[STATION][24][OBSERVATIONS][visibility_value_1][value],1);
+    $KSUT_metr = $data2[STATION][24][OBSERVATIONS][metar_value_1][value];
+    $KSUT_24hi = round($data2[STATION][24][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KSUT_24lo = round($data2[STATION][24][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KSUT_1pcp = round($data2[STATION][24][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KSUT_3pcp = round($data2[STATION][24][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSUT_6pcp = round($data2[STATION][24][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KSUT_24pc = round($data2[STATION][24][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KSVH_cond = $data2[STATION][25][OBSERVATIONS][weather_condition_value_1d][value];
+    $KSVH_temp = round($data2[STATION][25][OBSERVATIONS][air_temp_value_1][value],0);
+    $KSVH_6hhi = round($data2[STATION][25][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KSVH_6hlo = round($data2[STATION][25][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KSVH_dewp = round($data2[STATION][25][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KSVH_rain = round($data2[STATION][25][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSVH_wind = round($data2[STATION][25][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KSVH_wdir = $data2[STATION][25][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KSVH_visi = round($data2[STATION][25][OBSERVATIONS][visibility_value_1][value],1);
+    $KSVH_metr = $data2[STATION][25][OBSERVATIONS][metar_value_1][value];
+    $KSVH_24hi = round($data2[STATION][25][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KSVH_24lo = round($data2[STATION][25][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KSVH_1pcp = round($data2[STATION][25][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KSVH_3pcp = round($data2[STATION][25][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSVH_6pcp = round($data2[STATION][25][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KSVH_24pc = round($data2[STATION][25][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KTDF_cond = $data2[STATION][26][OBSERVATIONS][weather_condition_value_1d][value];
+    $KTDF_temp = round($data2[STATION][26][OBSERVATIONS][air_temp_value_1][value],0);
+    $KTDF_6hhi = round($data2[STATION][26][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KTDF_6hlo = round($data2[STATION][26][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KTDF_dewp = round($data2[STATION][26][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KTDF_rain = round($data2[STATION][26][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KTDF_wind = round($data2[STATION][26][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KTDF_wdir = $data2[STATION][26][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KTDF_visi = round($data2[STATION][26][OBSERVATIONS][visibility_value_1][value],1);
+    $KTDF_metr = $data2[STATION][26][OBSERVATIONS][metar_value_1][value];
+    $KTDF_24hi = round($data2[STATION][26][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KTDF_24lo = round($data2[STATION][26][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KTDF_1pcp = round($data2[STATION][26][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KTDF_3pcp = round($data2[STATION][26][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KTDF_6pcp = round($data2[STATION][26][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KTDF_24pc = round($data2[STATION][26][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KTTA_cond = $data2[STATION][27][OBSERVATIONS][weather_condition_value_1d][value];
+    $KTTA_temp = round($data2[STATION][27][OBSERVATIONS][air_temp_value_1][value],0);
+    $KTTA_6hhi = round($data2[STATION][27][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KTTA_6hlo = round($data2[STATION][27][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KTTA_dewp = round($data2[STATION][27][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KTTA_rain = round($data2[STATION][27][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KTTA_wind = round($data2[STATION][27][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KTTA_wdir = $data2[STATION][27][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KTTA_visi = round($data2[STATION][27][OBSERVATIONS][visibility_value_1][value],1);
+    $KTTA_metr = $data2[STATION][27][OBSERVATIONS][metar_value_1][value];
+    $KTTA_24hi = round($data2[STATION][27][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KTTA_24lo = round($data2[STATION][27][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KTTA_1pcp = round($data2[STATION][27][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KTTA_3pcp = round($data2[STATION][27][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KTTA_6pcp = round($data2[STATION][27][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KTTA_24pc = round($data2[STATION][27][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KUKF_cond = $data2[STATION][28][OBSERVATIONS][weather_condition_value_1d][value];
+    $KUKF_temp = round($data2[STATION][28][OBSERVATIONS][air_temp_value_1][value],0);
+    $KUKF_6hhi = round($data2[STATION][28][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KUKF_6hlo = round($data2[STATION][28][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KUKF_dewp = round($data2[STATION][28][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KUKF_rain = round($data2[STATION][28][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KUKF_wind = round($data2[STATION][28][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KUKF_wdir = $data2[STATION][28][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KUKF_visi = round($data2[STATION][28][OBSERVATIONS][visibility_value_1][value],1);
+    $KUKF_metr = $data2[STATION][28][OBSERVATIONS][metar_value_1][value];
+    $KUKF_24hi = round($data2[STATION][28][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KUKF_24lo = round($data2[STATION][28][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KUKF_1pcp = round($data2[STATION][28][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KUKF_3pcp = round($data2[STATION][28][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KUKF_6pcp = round($data2[STATION][28][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KUKF_24pc = round($data2[STATION][28][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KVUJ_cond = $data2[STATION][29][OBSERVATIONS][weather_condition_value_1d][value];
+    $KVUJ_temp = round($data2[STATION][29][OBSERVATIONS][air_temp_value_1][value],0);
+    $KVUJ_6hhi = round($data2[STATION][29][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KVUJ_6hlo = round($data2[STATION][29][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KVUJ_dewp = round($data2[STATION][29][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KVUJ_rain = round($data2[STATION][29][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KVUJ_wind = round($data2[STATION][29][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KVUJ_wdir = $data2[STATION][29][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KVUJ_visi = round($data2[STATION][29][OBSERVATIONS][visibility_value_1][value],1);
+    $KVUJ_metr = $data2[STATION][29][OBSERVATIONS][metar_value_1][value];
+    $KVUJ_24hi = round($data2[STATION][29][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KVUJ_24lo = round($data2[STATION][29][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KVUJ_1pcp = round($data2[STATION][29][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KVUJ_3pcp = round($data2[STATION][29][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KVUJ_6pcp = round($data2[STATION][29][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KVUJ_24pc = round($data2[STATION][29][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $K1A5_cond = $data2[STATION][30][OBSERVATIONS][weather_condition_value_1d][value];
+    $K1A5_temp = round($data2[STATION][30][OBSERVATIONS][air_temp_value_1][value],0);
+    $K1A5_6hhi = round($data2[STATION][30][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $K1A5_6hlo = round($data2[STATION][30][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $K1A5_dewp = round($data2[STATION][30][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $K1A5_rain = round($data2[STATION][30][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K1A5_wind = round($data2[STATION][30][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $K1A5_wdir = $data2[STATION][30][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $K1A5_visi = round($data2[STATION][30][OBSERVATIONS][visibility_value_1][value],1);
+    $K1A5_metr = $data2[STATION][30][OBSERVATIONS][metar_value_1][value];
+    $K1A5_24hi = round($data2[STATION][30][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $K1A5_24lo = round($data2[STATION][30][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $K1A5_1pcp = round($data2[STATION][30][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $K1A5_3pcp = round($data2[STATION][30][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K1A5_6pcp = round($data2[STATION][30][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $K1A5_24pc = round($data2[STATION][30][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KRCZ_cond = $data2[STATION][31][OBSERVATIONS][weather_condition_value_1d][value];
+    $KRCZ_temp = round($data2[STATION][31][OBSERVATIONS][air_temp_value_1][value],0);
+    $KRCZ_6hhi = round($data2[STATION][31][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KRCZ_6hlo = round($data2[STATION][31][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KRCZ_dewp = round($data2[STATION][31][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KRCZ_rain = round($data2[STATION][31][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRCZ_wind = round($data2[STATION][31][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KRCZ_wdir = $data2[STATION][31][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KRCZ_visi = round($data2[STATION][31][OBSERVATIONS][visibility_value_1][value],1);
+    $KRCZ_metr = $data2[STATION][31][OBSERVATIONS][metar_value_1][value];
+    $KRCZ_24hi = round($data2[STATION][31][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KRCZ_24lo = round($data2[STATION][31][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KRCZ_1pcp = round($data2[STATION][31][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KRCZ_3pcp = round($data2[STATION][31][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KRCZ_6pcp = round($data2[STATION][31][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KRCZ_24pc = round($data2[STATION][31][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEHO_cond = $data2[STATION][32][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEHO_temp = round($data2[STATION][32][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEHO_6hhi = round($data2[STATION][32][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEHO_6hlo = round($data2[STATION][32][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEHO_dewp = round($data2[STATION][32][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEHO_rain = round($data2[STATION][32][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEHO_wind = round($data2[STATION][32][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEHO_wdir = $data2[STATION][32][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEHO_visi = round($data2[STATION][32][OBSERVATIONS][visibility_value_1][value],1);
+    $KEHO_metr = $data2[STATION][32][OBSERVATIONS][metar_value_1][value];
+    $KEHO_24hi = round($data2[STATION][32][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEHO_24lo = round($data2[STATION][32][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEHO_1pcp = round($data2[STATION][32][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEHO_3pcp = round($data2[STATION][32][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEHO_6pcp = round($data2[STATION][32][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEHO_24pc = round($data2[STATION][32][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KEYF_cond = $data2[STATION][33][OBSERVATIONS][weather_condition_value_1d][value];
+    $KEYF_temp = round($data2[STATION][33][OBSERVATIONS][air_temp_value_1][value],0);
+    $KEYF_6hhi = round($data2[STATION][33][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KEYF_6hlo = round($data2[STATION][33][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KEYF_dewp = round($data2[STATION][33][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KEYF_rain = round($data2[STATION][33][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEYF_wind = round($data2[STATION][33][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KEYF_wdir = $data2[STATION][33][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KEYF_visi = round($data2[STATION][33][OBSERVATIONS][visibility_value_1][value],1);
+    $KEYF_metr = $data2[STATION][33][OBSERVATIONS][metar_value_1][value];
+    $KEYF_24hi = round($data2[STATION][33][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KEYF_24lo = round($data2[STATION][33][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KEYF_1pcp = round($data2[STATION][33][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KEYF_3pcp = round($data2[STATION][33][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KEYF_6pcp = round($data2[STATION][33][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KEYF_24pc = round($data2[STATION][33][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KFFA_cond = $data2[STATION][34][OBSERVATIONS][weather_condition_value_1d][value];
+    $KFFA_temp = round($data2[STATION][34][OBSERVATIONS][air_temp_value_1][value],0);
+    $KFFA_6hhi = round($data2[STATION][34][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KFFA_6hlo = round($data2[STATION][34][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KFFA_dewp = round($data2[STATION][34][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KFFA_rain = round($data2[STATION][34][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFFA_wind = round($data2[STATION][34][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KFFA_wdir = $data2[STATION][34][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KFFA_visi = round($data2[STATION][34][OBSERVATIONS][visibility_value_1][value],1);
+    $KFFA_metr = $data2[STATION][34][OBSERVATIONS][metar_value_1][value];
+    $KFFA_24hi = round($data2[STATION][34][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KFFA_24lo = round($data2[STATION][34][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KFFA_1pcp = round($data2[STATION][34][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KFFA_3pcp = round($data2[STATION][34][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KFFA_6pcp = round($data2[STATION][34][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KFFA_24pc = round($data2[STATION][34][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KLHZ_cond = $data2[STATION][35][OBSERVATIONS][weather_condition_value_1d][value];
+    $KLHZ_temp = round($data2[STATION][35][OBSERVATIONS][air_temp_value_1][value],0);
+    $KLHZ_6hhi = round($data2[STATION][35][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KLHZ_6hlo = round($data2[STATION][35][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KLHZ_dewp = round($data2[STATION][35][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KLHZ_rain = round($data2[STATION][35][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KLHZ_wind = round($data2[STATION][35][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KLHZ_wdir = $data2[STATION][35][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KLHZ_visi = round($data2[STATION][35][OBSERVATIONS][visibility_value_1][value],1);
+    $KLHZ_metr = $data2[STATION][35][OBSERVATIONS][metar_value_1][value];
+    $KLHZ_24hi = round($data2[STATION][35][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KLHZ_24lo = round($data2[STATION][35][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KLHZ_1pcp = round($data2[STATION][35][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KLHZ_3pcp = round($data2[STATION][35][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KLHZ_6pcp = round($data2[STATION][35][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KLHZ_24pc = round($data2[STATION][35][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KONX_cond = $data2[STATION][36][OBSERVATIONS][weather_condition_value_1d][value];
+    $KONX_temp = round($data2[STATION][36][OBSERVATIONS][air_temp_value_1][value],0);
+    $KONX_6hhi = round($data2[STATION][36][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KONX_6hlo = round($data2[STATION][36][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KONX_dewp = round($data2[STATION][36][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KONX_rain = round($data2[STATION][36][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KONX_wind = round($data2[STATION][36][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KONX_wdir = $data2[STATION][36][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KONX_visi = round($data2[STATION][36][OBSERVATIONS][visibility_value_1][value],1);
+    $KONX_metr = $data2[STATION][36][OBSERVATIONS][metar_value_1][value];
+    $KONX_24hi = round($data2[STATION][36][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KONX_24lo = round($data2[STATION][36][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KONX_1pcp = round($data2[STATION][36][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KONX_3pcp = round($data2[STATION][36][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KONX_6pcp = round($data2[STATION][36][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KONX_24pc = round($data2[STATION][36][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KSIF_cond = $data2[STATION][37][OBSERVATIONS][weather_condition_value_1d][value];
+    $KSIF_temp = round($data2[STATION][37][OBSERVATIONS][air_temp_value_1][value],0);
+    $KSIF_6hhi = round($data2[STATION][37][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KSIF_6hlo = round($data2[STATION][37][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KSIF_dewp = round($data2[STATION][37][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KSIF_rain = round($data2[STATION][37][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSIF_wind = round($data2[STATION][37][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KSIF_wdir = $data2[STATION][37][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KSIF_visi = round($data2[STATION][37][OBSERVATIONS][visibility_value_1][value],1);
+    $KSIF_metr = $data2[STATION][37][OBSERVATIONS][metar_value_1][value];
+    $KSIF_24hi = round($data2[STATION][37][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KSIF_24lo = round($data2[STATION][37][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KSIF_1pcp = round($data2[STATION][37][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KSIF_3pcp = round($data2[STATION][37][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSIF_6pcp = round($data2[STATION][37][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KSIF_24pc = round($data2[STATION][37][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $K24A_cond = $data2[STATION][38][OBSERVATIONS][weather_condition_value_1d][value];
+    $K24A_temp = round($data2[STATION][38][OBSERVATIONS][air_temp_value_1][value],0);
+    $K24A_6hhi = round($data2[STATION][38][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $K24A_6hlo = round($data2[STATION][38][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $K24A_dewp = round($data2[STATION][38][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $K24A_rain = round($data2[STATION][38][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K24A_wind = round($data2[STATION][38][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $K24A_wdir = $data2[STATION][38][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $K24A_visi = round($data2[STATION][38][OBSERVATIONS][visibility_value_1][value],1);
+    $K24A_metr = $data2[STATION][38][OBSERVATIONS][metar_value_1][value];
+    $K24A_24hi = round($data2[STATION][38][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $K24A_24lo = round($data2[STATION][38][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $K24A_1pcp = round($data2[STATION][38][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $K24A_3pcp = round($data2[STATION][38][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K24A_6pcp = round($data2[STATION][38][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $K24A_24pc = round($data2[STATION][38][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KETC_cond = $data2[STATION][39][OBSERVATIONS][weather_condition_value_1d][value];
+    $KETC_temp = round($data2[STATION][39][OBSERVATIONS][air_temp_value_1][value],0);
+    $KETC_6hhi = round($data2[STATION][39][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KETC_6hlo = round($data2[STATION][39][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KETC_dewp = round($data2[STATION][39][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KETC_rain = round($data2[STATION][39][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KETC_wind = round($data2[STATION][39][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KETC_wdir = $data2[STATION][39][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KETC_visi = round($data2[STATION][39][OBSERVATIONS][visibility_value_1][value],1);
+    $KETC_metr = $data2[STATION][39][OBSERVATIONS][metar_value_1][value];
+    $KETC_24hi = round($data2[STATION][39][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KETC_24lo = round($data2[STATION][39][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KETC_1pcp = round($data2[STATION][39][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KETC_3pcp = round($data2[STATION][39][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KETC_6pcp = round($data2[STATION][39][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KETC_24pc = round($data2[STATION][39][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KIXA_cond = $data2[STATION][40][OBSERVATIONS][weather_condition_value_1d][value];
+    $KIXA_temp = round($data2[STATION][40][OBSERVATIONS][air_temp_value_1][value],0);
+    $KIXA_6hhi = round($data2[STATION][40][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KIXA_6hlo = round($data2[STATION][40][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KIXA_dewp = round($data2[STATION][40][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KIXA_rain = round($data2[STATION][40][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KIXA_wind = round($data2[STATION][40][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KIXA_wdir = $data2[STATION][40][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KIXA_visi = round($data2[STATION][40][OBSERVATIONS][visibility_value_1][value],1);
+    $KIXA_metr = $data2[STATION][40][OBSERVATIONS][metar_value_1][value];
+    $KIXA_24hi = round($data2[STATION][40][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KIXA_24lo = round($data2[STATION][40][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KIXA_1pcp = round($data2[STATION][40][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KIXA_3pcp = round($data2[STATION][40][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KIXA_6pcp = round($data2[STATION][40][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KIXA_24pc = round($data2[STATION][40][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $KSCR_cond = $data2[STATION][41][OBSERVATIONS][weather_condition_value_1d][value];
+    $KSCR_temp = round($data2[STATION][41][OBSERVATIONS][air_temp_value_1][value],0);
+    $KSCR_6hhi = round($data2[STATION][41][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $KSCR_6hlo = round($data2[STATION][41][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $KSCR_dewp = round($data2[STATION][41][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $KSCR_rain = round($data2[STATION][41][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSCR_wind = round($data2[STATION][41][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $KSCR_wdir = $data2[STATION][41][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $KSCR_visi = round($data2[STATION][41][OBSERVATIONS][visibility_value_1][value],1);
+    $KSCR_metr = $data2[STATION][41][OBSERVATIONS][metar_value_1][value];
+    $KSCR_24hi = round($data2[STATION][41][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $KSCR_24lo = round($data2[STATION][41][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $KSCR_1pcp = round($data2[STATION][41][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $KSCR_3pcp = round($data2[STATION][41][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $KSCR_6pcp = round($data2[STATION][41][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $KSCR_24pc = round($data2[STATION][41][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+    $K7W6_cond = $data2[STATION][42][OBSERVATIONS][weather_condition_value_1d][value];
+    $K7W6_temp = round($data2[STATION][42][OBSERVATIONS][air_temp_value_1][value],0);
+    $K7W6_6hhi = round($data2[STATION][42][OBSERVATIONS][air_temp_high_6_hour_value_1][value],0);
+    $K7W6_6hlo = round($data2[STATION][42][OBSERVATIONS][air_temp_low_6_hour_value_1][value],0);
+    $K7W6_dewp = round($data2[STATION][42][OBSERVATIONS][dew_point_temperature_value_1][value],0);
+    $K7W6_rain = round($data2[STATION][42][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K7W6_wind = round($data2[STATION][42][OBSERVATIONS][wind_speed_value_1][value]*1.151,0);
+    $K7W6_wdir = $data2[STATION][42][OBSERVATIONS][wind_cardinal_direction_value_1d][value];
+    $K7W6_visi = round($data2[STATION][42][OBSERVATIONS][visibility_value_1][value],1);
+    $K7W6_metr = $data2[STATION][42][OBSERVATIONS][metar_value_1][value];
+    $K7W6_24hi = round($data2[STATION][42][OBSERVATIONS][air_temp_high_24_hour_value_1][value],0);
+    $K7W6_24lo = round($data2[STATION][42][OBSERVATIONS][air_temp_low_24_hour_value_1][value],0);
+    $K7W6_1pcp = round($data2[STATION][42][OBSERVATIONS][precip_accum_one_hour_value_1][value],2);
+    $K7W6_3pcp = round($data2[STATION][42][OBSERVATIONS][precip_accum_three_hour_value_1][value],2);
+    $K7W6_6pcp = round($data2[STATION][42][OBSERVATIONS][precip_accum_six_hour_value_1][value],2);
+    $K7W6_24pc = round($data2[STATION][42][OBSERVATIONS][precip_accum_24_hour_value_1][value],2);
+    
+//
+//
+// END DATA INGEST
+//
+//
+
+$today = $data[STATION][0][OBSERVATIONS][ceiling_value_1][date_time];
+$tostr = strval($today);
+//echo $today;
+
+
+
+//KRDU
+$file  = fopen('KRDU_climo.csv', 'r');
+while (($line = fgetcsv($file)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKRDU[] = $line;
+}
+fclose($file);
+//print_r($arrayKRDU);
+
+$keyKRDU = array_search($tostr, array_column($arrayKRDU, 0));
+$highKRDU = $arrayKRDU[$keyKRDU][1];
+$lowKRDU  = $arrayKRDU[$keyKRDU][2];
+/*
+echo $keyKRDU;
+echo $highKRDU;
+echo $lowKRDU;
+*/
+
+
+
+//KGSO
+$file2  = fopen('KGSO_climo.csv', 'r');
+while (($line2 = fgetcsv($file2)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKGSO[] = $line2;
+}
+fclose($file2);
+//print_r($arrayKGSO);
+
+$keyKGSO = array_search($tostr, array_column($arrayKGSO, 0));
+$highKGSO = $arrayKGSO[$keyKGSO][1];
+$lowKGSO  = $arrayKGSO[$keyKGSO][2];
+/*
+echo $keyKGSO;
+echo $highKGSO;
+echo $lowKGSO;
+*/
+
+
+
+//KFAY
+$file3  = fopen('KFAY_climo.csv', 'r');
+while (($line3 = fgetcsv($file3)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKFAY[] = $line3;
+}
+fclose($file3);
+//print_r($arrayKFAY);
+
+$keyKFAY = array_search($tostr, array_column($arrayKFAY, 0));
+$highKFAY = $arrayKFAY[$keyKFAY][1];
+$lowKFAY  = $arrayKFAY[$keyKFAY][2];
+/*
+echo $keyKFAY;
+echo $highKFAY;
+echo $lowKFAY;
+*/
+
+
+//KILM
+$file4  = fopen('KILM_climo.csv', 'r');
+while (($line4 = fgetcsv($file4)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKILM[] = $line4;
+}
+fclose($file4);
+//print_r($arrayKILM);
+
+$keyKILM = array_search($tostr, array_column($arrayKILM, 0));
+$highKILM = $arrayKILM[$keyKILM][1];
+$lowKILM  = $arrayKILM[$keyKILM][2];
+/*
+echo $keyKILM;
+echo $highKILM;
+echo $lowKILM;
+*/
+
+
+
+//KFLO
+$file5  = fopen('KFLO_climo.csv', 'r');
+while (($line5 = fgetcsv($file5)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKFLO[] = $line5;
+}
+fclose($file5);
+//print_r($arrayKFLO);
+
+$keyKFLO = array_search($tostr, array_column($arrayKFLO, 0));
+$highKFLO = $arrayKFLO[$keyKFLO][1];
+$lowKFLO  = $arrayKFLO[$keyKFLO][2];
+/*
+echo $keyKFLO;
+echo $highKFLO;
+echo $lowKFLO;
+*/
+
+
+
+//KCRE
+$file6  = fopen('KCRE_climo.csv', 'r');
+while (($line6 = fgetcsv($file6)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCRE[] = $line6;
+}
+fclose($file6);
+//print_r($arrayKCRE);
+
+$keyKCRE = array_search($tostr, array_column($arrayKCRE, 0));
+$highKCRE = $arrayKCRE[$keyKCRE][1];
+$lowKCRE  = $arrayKCRE[$keyKCRE][2];
+/*
+echo $keyKCRE;
+echo $highKCRE;
+echo $lowKCRE;
+*/
+
+
+
+//KAKH
+$file7  = fopen('KAKH_climo.csv', 'r');
+while (($line7 = fgetcsv($file7)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKAKH[] = $line7;
+}
+fclose($file7);
+//print_r($arrayKAKH);
+
+$keyKAKH = array_search($tostr, array_column($arrayKAKH, 0));
+$highKAKH = $arrayKAKH[$keyKAKH][1];
+$lowKAKH  = $arrayKAKH[$keyKAKH][2];
+/*
+echo $keyKAKH;
+echo $highKAKH;
+echo $lowKAKH;
+*/
+
+
+
+//KAND
+$fileKAND  = fopen('KAND_climo.csv', 'r');
+while (($lineKAND = fgetcsv($fileKAND)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKAND[] = $lineKAND;
+}
+fclose($fileKAND);
+//print_r($arrayKAND);
+
+$keyKAND = array_search($tostr, array_column($arrayKAND, 0));
+$highKAND = $arrayKAND[$keyKAND][1];
+$lowKAND  = $arrayKAND[$keyKAND][2];
+/*
+echo $keyKAND;
+echo $highKAND;
+echo $lowKAND;
+*/
+
+
+
+//KAVL
+$fileKAVL  = fopen('KAVL_climo.csv', 'r');
+while (($lineKAVL = fgetcsv($fileKAVL)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKAVL[] = $lineKAVL;
+}
+fclose($fileKAVL);
+//print_r($arrayKAVL);
+
+$keyKAVL = array_search($tostr, array_column($arrayKAVL, 0));
+$highKAVL = $arrayKAVL[$keyKAVL][1];
+$lowKAVL  = $arrayKAVL[$keyKAVL][2];
+/*
+echo $keyKAVL;
+echo $highKAVL;
+echo $lowKAVL;
+*/
+
+
+
+//KBUY
+$fileKBUY  = fopen('KBUY_climo.csv', 'r');
+while (($lineKBUY = fgetcsv($fileKBUY)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKBUY[] = $lineKBUY;
+}
+fclose($fileKBUY);
+//print_r($arrayKBUY);
+
+$keyKBUY = array_search($tostr, array_column($arrayKBUY, 0));
+$highKBUY = $arrayKBUY[$keyKBUY][1];
+$lowKBUY  = $arrayKBUY[$keyKBUY][2];
+/*
+echo $keyKBUY;
+echo $highKBUY;
+echo $lowKBUY;
+*/
+
+
+
+//KCAE
+$fileKCAE  = fopen('KCAE_climo.csv', 'r');
+while (($lineKCAE = fgetcsv($fileKCAE)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCAE[] = $lineKCAE;
+}
+fclose($fileKCAE);
+//print_r($arrayKCAE);
+
+$keyKCAE = array_search($tostr, array_column($arrayKCAE, 0));
+$highKCAE = $arrayKCAE[$keyKCAE][1];
+$lowKCAE  = $arrayKCAE[$keyKCAE][2];
+/*
+echo $keyKCAE;
+echo $highKCAE;
+echo $lowKCAE;
+*/
+
+
+
+//KCEU
+$fileKCEU  = fopen('KCEU_climo.csv', 'r');
+while (($lineKCEU = fgetcsv($fileKCEU)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCEU[] = $lineKCEU;
+}
+fclose($fileKCEU);
+//print_r($arrayKCEU);
+
+$keyKCEU = array_search($tostr, array_column($arrayKCEU, 0));
+$highKCEU = $arrayKCEU[$keyKCEU][1];
+$lowKCEU  = $arrayKCEU[$keyKCEU][2];
+/*
+echo $keyKCEU;
+echo $highKCEU;
+echo $lowKCEU;
+*/
+
+
+
+//KCHS
+$fileKCHS  = fopen('KCHS_climo.csv', 'r');
+while (($lineKCHS = fgetcsv($fileKCHS)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCHS[] = $lineKCHS;
+}
+fclose($fileKCHS);
+//print_r($arrayKCHS);
+
+$keyKCHS = array_search($tostr, array_column($arrayKCHS, 0));
+$highKCHS = $arrayKCHS[$keyKCHS][1];
+$lowKCHS  = $arrayKCHS[$keyKCHS][2];
+/*
+echo $keyKCHS;
+echo $highKCHS;
+echo $lowKCHS;
+*/
+
+
+
+//KCLT
+$fileKCLT  = fopen('KCLT_climo.csv', 'r');
+while (($lineKCLT = fgetcsv($fileKCLT)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCLT[] = $lineKCLT;
+}
+fclose($fileKCLT);
+//print_r($arrayKCLT);
+
+$keyKCLT = array_search($tostr, array_column($arrayKCLT, 0));
+$highKCLT = $arrayKCLT[$keyKCLT][1];
+$lowKCLT  = $arrayKCLT[$keyKCLT][2];
+/*
+echo $keyKCLT;
+echo $highKCLT;
+echo $lowKCLT;
+*/
+
+
+
+//KCUB
+$fileKCUB  = fopen('KCUB_climo.csv', 'r');
+while (($lineKCUB = fgetcsv($fileKCUB)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKCUB[] = $lineKCUB;
+}
+fclose($fileKCUB);
+//print_r($arrayKCUB);
+
+$keyKCUB = array_search($tostr, array_column($arrayKCUB, 0));
+$highKCUB = $arrayKCUB[$keyKCUB][1];
+$lowKCUB  = $arrayKCUB[$keyKCUB][2];
+/*
+echo $keyKCUB;
+echo $highKCUB;
+echo $lowKCUB;
+*/
+
+
+
+//KECG
+$fileKECG  = fopen('KECG_climo.csv', 'r');
+while (($lineKECG = fgetcsv($fileKECG)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKECG[] = $lineKECG;
+}
+fclose($fileKECG);
+//print_r($arrayKECG);
+
+$keyKECG = array_search($tostr, array_column($arrayKECG, 0));
+$highKECG = $arrayKECG[$keyKECG][1];
+$lowKECG  = $arrayKECG[$keyKECG][2];
+/*
+echo $keyKECG;
+echo $highKECG;
+echo $lowKECG;
+*/
+
+
+
+//KEQY
+$fileKEQY  = fopen('KEQY_climo.csv', 'r');
+while (($lineKEQY = fgetcsv($fileKEQY)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKEQY[] = $lineKEQY;
+}
+fclose($fileKEQY);
+//print_r($arrayKEQY);
+
+$keyKEQY = array_search($tostr, array_column($arrayKEQY, 0));
+$highKEQY = $arrayKEQY[$keyKEQY][1];
+$lowKEQY  = $arrayKEQY[$keyKEQY][2];
+/*
+echo $keyKEQY;
+echo $highKEQY;
+echo $lowKEQY;
+*/
+
+
+
+//KEWN
+$fileKEWN  = fopen('KEWN_climo.csv', 'r');
+while (($lineKEWN = fgetcsv($fileKEWN)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKEWN[] = $lineKEWN;
+}
+fclose($fileKEWN);
+//print_r($arrayKEWN);
+
+$keyKEWN = array_search($tostr, array_column($arrayKEWN, 0));
+$highKEWN = $arrayKEWN[$keyKEWN][1];
+$lowKEWN  = $arrayKEWN[$keyKEWN][2];
+/*
+echo $keyKEWN;
+echo $highKEWN;
+echo $lowKEWN;
+*/
+
+
+
+//KGMU
+$fileKGMU  = fopen('KGMU_climo.csv', 'r');
+while (($lineKGMU = fgetcsv($fileKGMU)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKGMU[] = $lineKGMU;
+}
+fclose($fileKGMU);
+//print_r($arrayKGMU);
+
+$keyKGMU = array_search($tostr, array_column($arrayKGMU, 0));
+$highKGMU = $arrayKGMU[$keyKGMU][1];
+$lowKGMU  = $arrayKGMU[$keyKGMU][2];
+/*
+echo $keyKGMU;
+echo $highKGMU;
+echo $lowKGMU;
+*/
+
+
+
+//KGRD
+$fileKGRD  = fopen('KGRD_climo.csv', 'r');
+while (($lineKGRD = fgetcsv($fileKGRD)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKGRD[] = $lineKGRD;
+}
+fclose($fileKGRD);
+//print_r($arrayKGRD);
+
+$keyKGRD = array_search($tostr, array_column($arrayKGRD, 0));
+$highKGRD = $arrayKGRD[$keyKGRD][1];
+$lowKGRD  = $arrayKGRD[$keyKGRD][2];
+/*
+echo $keyKGRD;
+echo $highKGRD;
+echo $lowKGRD;
+*/
+
+
+
+//KGSP
+$fileKGSP  = fopen('KGSP_climo.csv', 'r');
+while (($lineKGSP = fgetcsv($fileKGSP)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKGSP[] = $lineKGSP;
+}
+fclose($fileKGSP);
+//print_r($arrayKGSP);
+
+$keyKGSP = array_search($tostr, array_column($arrayKGSP, 0));
+$highKGSP = $arrayKGSP[$keyKGSP][1];
+$lowKGSP  = $arrayKGSP[$keyKGSP][2];
+/*
+echo $keyKGSP;
+echo $highKGSP;
+echo $lowKGSP;
+*/
+
+
+
+//KHKY
+$fileKHKY  = fopen('KHKY_climo.csv', 'r');
+while (($lineKHKY = fgetcsv($fileKHKY)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKHKY[] = $lineKHKY;
+}
+fclose($fileKHKY);
+//print_r($arrayKHKY);
+
+$keyKHKY = array_search($tostr, array_column($arrayKHKY, 0));
+$highKHKY = $arrayKHKY[$keyKHKY][1];
+$lowKHKY  = $arrayKHKY[$keyKHKY][2];
+/*
+echo $keyKHKY;
+echo $highKHKY;
+echo $lowKHKY;
+*/
+
+
+
+//KHSE
+$fileKHSE  = fopen('KHSE_climo.csv', 'r');
+while (($lineKHSE = fgetcsv($fileKHSE)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKHSE[] = $lineKHSE;
+}
+fclose($fileKHSE);
+//print_r($arrayKHSE);
+
+$keyKHSE = array_search($tostr, array_column($arrayKHSE, 0));
+$highKHSE = $arrayKHSE[$keyKHSE][1];
+$lowKHSE  = $arrayKHSE[$keyKHSE][2];
+/*
+echo $keyKHSE;
+echo $highKHSE;
+echo $lowKHSE;
+*/
+
+
+
+//KINT
+$fileKINT  = fopen('KINT_climo.csv', 'r');
+while (($lineKINT = fgetcsv($fileKINT)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKINT[] = $lineKINT;
+}
+fclose($fileKINT);
+//print_r($arrayKINT);
+
+$keyKINT = array_search($tostr, array_column($arrayKINT, 0));
+$highKINT = $arrayKINT[$keyKINT][1];
+$lowKINT  = $arrayKINT[$keyKINT][2];
+/*
+echo $keyKINT;
+echo $highKINT;
+echo $lowKINT;
+*/
+
+
+
+//KMEB
+$fileKMEB  = fopen('KMEB_climo.csv', 'r');
+while (($lineKMEB = fgetcsv($fileKMEB)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKMEB[] = $lineKMEB;
+}
+fclose($fileKMEB);
+//print_r($arrayKMEB);
+
+$keyKMEB = array_search($tostr, array_column($arrayKMEB, 0));
+$highKMEB = $arrayKMEB[$keyKMEB][1];
+$lowKMEB  = $arrayKMEB[$keyKMEB][2];
+/*
+echo $keyKMEB;
+echo $highKMEB;
+echo $lowKMEB;
+*/
+
+
+
+//KMRH
+$fileKMRH  = fopen('KMRH_climo.csv', 'r');
+while (($lineKMRH = fgetcsv($fileKMRH)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKMRH[] = $lineKMRH;
+}
+fclose($fileKMRH);
+//print_r($arrayKMRH);
+
+$keyKMRH = array_search($tostr, array_column($arrayKMRH, 0));
+$highKMRH = $arrayKMRH[$keyKMRH][1];
+$lowKMRH  = $arrayKMRH[$keyKMRH][2];
+/*
+echo $keyKMRH;
+echo $highKMRH;
+echo $lowKMRH;
+*/
+
+
+
+//KOGB
+$fileKOGB  = fopen('KOGB_climo.csv', 'r');
+while (($lineKOGB = fgetcsv($fileKOGB)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKOGB[] = $lineKOGB;
+}
+fclose($fileKOGB);
+//print_r($arrayKOGB);
+
+$keyKOGB = array_search($tostr, array_column($arrayKOGB, 0));
+$highKOGB = $arrayKOGB[$keyKOGB][1];
+$lowKOGB  = $arrayKOGB[$keyKOGB][2];
+/*
+echo $keyKOGB;
+echo $highKOGB;
+echo $lowKOGB;
+*/
+
+
+
+//KRWI
+$fileKRWI  = fopen('KRWI_climo.csv', 'r');
+while (($lineKRWI = fgetcsv($fileKRWI)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKRWI[] = $lineKRWI;
+}
+fclose($fileKRWI);
+//print_r($arrayKRWI);
+
+$keyKRWI = array_search($tostr, array_column($arrayKRWI, 0));
+$highKRWI = $arrayKRWI[$keyKRWI][1];
+$lowKRWI  = $arrayKRWI[$keyKRWI][2];
+/*
+echo $keyKRWI;
+echo $highKRWI;
+echo $lowKRWI;
+*/
+
+
+
+//KUZA
+$fileKUZA  = fopen('KUZA_climo.csv', 'r');
+while (($lineKUZA = fgetcsv($fileKUZA)) !== FALSE) {
+  //$line is an array of the csv elements
+  $arrayKUZA[] = $lineKUZA;
+}
+fclose($fileKUZA);
+//print_r($arrayKUZA);
+
+$keyKUZA = array_search($tostr, array_column($arrayKUZA, 0));
+$highKUZA = $arrayKUZA[$keyKUZA][1];
+$lowKUZA  = $arrayKUZA[$keyKUZA][2];
+/*
+echo $keyKUZA;
+echo $highKUZA;
+echo $lowKUZA;
+*/
+
+
+
+
+
+
+
+/*
+$dates = array_column($array, 0);
+$lows  = array_column($array, 1);
+$highs = array_column($array, 2);
+print_r($dates);
+*/
+
+
+
+
+
+
+
+
+
+ ?>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>North Carolina FAA Weather Stations</title>
+        <link rel="stylesheet" type="text/css" href="https://www.andrewswxcenter.com/files/style.css">
+        
+<script src="tsorter.min.js" type="text/javascript"></script> 
+        
+<script>
+function init() {
+    var sorter1 = tsorter.create('ncasos');
+    var sorter2 = tsorter.create('ncawos');
+}
+    
+window.onload = init;
+    
+</script>
+
+        
+    </head>
+
+    <body>
+
+<p>NORTH CAROLINA ASOS</p>
+            <table class="ncasos" id="ncasos">
+                <thead>
+                <tr>
+                    <th width="3%">ID</th>
+                    <th width="10%">Location</th>
+                    <th width="5%">County</th>
+                    <th data-tsorter="numeric" width="3%">Elev (ft)</th>
+                    <th width="6%">Wx</th>
+                    <th width="3%">Temp (F)</th>
+                    <th width="3%">6hrHi</th>
+                    <th data-tsorter="numeric" width="3%">6hrLo</th>
+                    <th data-tsorter="numeric" width="3%">24hrHi</th>
+                    <th data-tsorter="numeric" width="3%">24hrLo</th>
+                    <th data-tsorter="numeric" width="3%">Tdew</th>
+                    <th data-tsorter="numeric" width="3%">T-Tdew</th>
+                    <th data-tsorter="numeric" width="3%">1hrPcp</th>
+                    <th data-tsorter="numeric" width="3%">3hrPcp</th>
+                    <th data-tsorter="numeric" width="3%">6hrPcp</th>
+                    <th data-tsorter="numeric" width="3%">24hrPcp</th>
+                    <th width="4%">Wind</th>
+                    <th data-tsorter="numeric" width="2%">Vis</th>
+                    <th width="34%">METAR</th>
+                </tr>
+                <thead>
+                <tbody>
+                <tr>
+                    <td>KAKH</td> 
+                    <td>Gastonia</td> 
+                    <td>Gaston</td> 
+                    <td>791'</td> 
+                    <td><?php echo $KAKH_cond; ?></td> 
+                    <td><?php echo $KAKH_temp; ?></td> 
+                    <td><?php echo $KAKH_6hhi; ?></td> 
+                    <td><?php echo $KAKH_6hlo; ?></td> 
+                    <?php if ($KAKH_24hi > $highKAKH){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAKH_24hi</td>"; 
+                                } elseif ($KAKH_24hi < $highKAKH){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAKH_24hi</td>";
+                                } else echo "<td>$KAKH_24hi;</td>" ?>
+                    <?php if ($KAKH_24lo > $lowKAKH){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAKH_24lo</td>"; 
+                                } elseif ($KAKH_24lo < $lowKAKH){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAKH_24lo</td>";
+                                } else echo "<td>$KAKH_24lo;</td>" ?>
+                    <td><?php echo $KAKH_dewp; ?></td> 
+                    <td><?php echo $KAKH_temp-$KAKH_dewp; ?></td> 
+                    <td><?php echo $KAKH_1pcp; ?></td>
+                    <td><?php echo $KAKH_3pcp; ?></td>
+                    <td><?php echo $KAKH_6pcp; ?></td>
+                    <td><?php echo $KAKH_24pc; ?></td>
+                    <td><?php echo $KAKH_wdir; ?> <?php echo $KAKH_wind; ?></td>
+                    <td><?php echo $KAKH_visi; ?></td> 
+                    <td><?php echo $KAKH_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KAVL</td> 
+                    <td>Asheville</td> 
+                    <td>Buncombe</td> 
+                    <td>2165</td> 
+                    <td><?php echo $KAVL_cond; ?></td> 
+                    <td><?php echo $KAVL_temp; ?></td> 
+                    <td><?php echo $KAVL_6hhi; ?></td> 
+                    <td><?php echo $KAVL_6hlo; ?></td> 
+                    <?php if ($KAVL_24hi > $highKAVL){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAVL_24hi</td>"; 
+                                } elseif ($KAVL_24hi < $highKAVL){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAVL_24hi</td>";
+                                } else echo "<td>$KAVL_24hi;</td>" ?>
+                    <?php if ($KAVL_24lo > $lowKAVL){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KAVL_24lo</td>"; 
+                                } elseif ($KAVL_24lo < $lowKAVL){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KAVL_24lo</td>";
+                                } else echo "<td>$KAVL_24lo;</td>" ?>
+                    <td><?php echo $KAVL_dewp; ?></td> 
+                    <td><?php echo $KAVL_temp-$KAVL_dewp; ?></td> 
+                    <td><?php echo $KAVL_1pcp; ?></td>
+                    <td><?php echo $KAVL_3pcp; ?></td>
+                    <td><?php echo $KAVL_6pcp; ?></td>
+                    <td><?php echo $KAVL_24pc; ?></td>
+                    <td><?php echo $KAVL_wdir; ?> <?php echo $KAVL_wind; ?></td>
+                    <td><?php echo $KAVL_visi; ?></td> 
+                    <td><?php echo $KAVL_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KBUY</td> 
+                    <td>Burlington</td> 
+                    <td>Alamance</td> 
+                    <td>604</td> 
+                    <td><?php echo $KBUY_cond; ?></td> 
+                    <td><?php echo $KBUY_temp; ?></td> 
+                    <td><?php echo $KBUY_6hhi; ?></td> 
+                    <td><?php echo $KBUY_6hlo; ?></td> 
+                    <?php if ($KBUY_24hi > $highKBUY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KBUY_24hi</td>"; 
+                                } elseif ($KBUY_24hi < $highKBUY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KBUY_24hi</td>";
+                                } else echo "<td>$KBUY_24hi;</td>" ?>
+                    <?php if ($KBUY_24lo > $lowKBUY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KBUY_24lo</td>"; 
+                                } elseif ($KBUY_24lo < $lowKBUY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KBUY_24lo</td>";
+                                } else echo "<td>$KBUY_24lo;</td>" ?>
+                    <td><?php echo $KBUY_dewp; ?></td> 
+                    <td><?php echo $KBUY_temp-$KBUY_dewp; ?></td> 
+                    <td><?php echo $KBUY_1pcp; ?></td>
+                    <td><?php echo $KBUY_3pcp; ?></td>
+                    <td><?php echo $KBUY_6pcp; ?></td>
+                    <td><?php echo $KBUY_24pc; ?></td>
+                    <td><?php echo $KBUY_wdir; ?> <?php echo $KBUY_wind; ?></td>
+                    <td><?php echo $KBUY_visi; ?></td> 
+                    <td><?php echo $KBUY_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCLT</td> 
+                    <td>Charlotte-Douglas Int'l</td> 
+                    <td>Mecklenburg</td> 
+                    <td>748</td> 
+                    <td><?php echo $KCLT_cond; ?></td> 
+                    <td><?php echo $KCLT_temp; ?></td> 
+                    <td><?php echo $KCLT_6hhi; ?></td> 
+                    <td><?php echo $KCLT_6hlo; ?></td> 
+                    <?php if ($KCLT_24hi > $highKCLT){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCLT_24hi</td>"; 
+                                } elseif ($KCLT_24hi < $highKCLT){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCLT_24hi</td>";
+                                } else echo "<td>$KCLT_24hi;</td>" ?>
+                    <?php if ($KCLT_24lo > $lowKCLT){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KCLT_24lo</td>"; 
+                                } elseif ($KCLT_24lo < $lowKCLT){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KCLT_24lo</td>";
+                                } else echo "<td>$KCLT_24lo;</td>" ?>
+                    <td><?php echo $KCLT_dewp; ?></td> 
+                    <td><?php echo $KCLT_temp-$KCLT_dewp; ?></td> 
+                    <td><?php echo $KCLT_1pcp; ?></td>
+                    <td><?php echo $KCLT_3pcp; ?></td>
+                    <td><?php echo $KCLT_6pcp; ?></td>
+                    <td><?php echo $KCLT_24pc; ?></td>
+                    <td><?php echo $KCLT_wdir; ?> <?php echo $KCLT_wind; ?></td>
+                    <td><?php echo $KCLT_visi; ?></td> 
+                    <td><?php echo $KCLT_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KECG</td> 
+                    <td>Elizabeth City</td> 
+                    <td>Pasquotank</td> 
+                    <td>3</td> 
+                    <td><?php echo $KECG_cond; ?></td> 
+                    <td><?php echo $KECG_temp; ?></td> 
+                    <td><?php echo $KECG_6hhi; ?></td> 
+                    <td><?php echo $KECG_6hlo; ?></td> 
+                    <?php if ($KECG_24hi > $highKECG){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KECG_24hi</td>"; 
+                                } elseif ($KECG_24hi < $highKECG){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KECG_24hi</td>";
+                                } else echo "<td>$KECG_24hi;</td>" ?>
+                    <?php if ($KECG_24lo > $lowKECG){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KECG_24lo</td>"; 
+                                } elseif ($KECG_24lo < $lowKECG){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KECG_24lo</td>";
+                                } else echo "<td>$KECG_24lo;</td>" ?>
+                    <td><?php echo $KECG_dewp; ?></td> 
+                    <td><?php echo $KECG_temp-$KECG_dewp; ?></td> 
+                    <td><?php echo $KECG_1pcp; ?></td>
+                    <td><?php echo $KECG_3pcp; ?></td>
+                    <td><?php echo $KECG_6pcp; ?></td>
+                    <td><?php echo $KECG_24pc; ?></td>
+                    <td><?php echo $KECG_wdir; ?> <?php echo $KECG_wind; ?></td>
+                    <td><?php echo $KECG_visi; ?></td> 
+                    <td><?php echo $KECG_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEQY</td> 
+                    <td>Monroe Executive</td> 
+                    <td>Union</td> 
+                    <td>679</td> 
+                    <td><?php echo $KEQY_cond; ?></td> 
+                    <td><?php echo $KEQY_temp; ?></td> 
+                    <td><?php echo $KEQY_6hhi; ?></td> 
+                    <td><?php echo $KEQY_6hlo; ?></td> 
+                    <?php if ($KEQY_24hi > $highKEQY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KEQY_24hi</td>"; 
+                                } elseif ($KEQY_24hi < $highKEQY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KEQY_24hi</td>";
+                                } else echo "<td>$KEQY_24hi;</td>" ?>
+                    <?php if ($KEQY_24lo > $lowKEQY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KEQY_24lo</td>"; 
+                                } elseif ($KEQY_24lo < $lowKEQY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KEQY_24lo</td>";
+                                } else echo "<td>$KEQY_24lo;</td>" ?>
+                    <td><?php echo $KEQY_dewp; ?></td> 
+                    <td><?php echo $KEQY_temp-$KEQY_dewp; ?></td> 
+                    <td><?php echo $KEQY_1pcp; ?></td>
+                    <td><?php echo $KEQY_3pcp; ?></td>
+                    <td><?php echo $KEQY_6pcp; ?></td>
+                    <td><?php echo $KEQY_24pc; ?></td>
+                    <td><?php echo $KEQY_wdir; ?> <?php echo $KEQY_wind; ?></td>
+                    <td><?php echo $KEQY_visi; ?></td> 
+                    <td><?php echo $KEQY_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEWN</td> 
+                    <td>New Bern - Coastal Carolina</td> 
+                    <td>Craven</td> 
+                    <td>16</td> 
+                    <td><?php echo $KEWN_cond; ?></td> 
+                    <td><?php echo $KEWN_temp; ?></td> 
+                    <td><?php echo $KEWN_6hhi; ?></td> 
+                    <td><?php echo $KEWN_6hlo; ?></td> 
+                    <?php if ($KEWN_24hi > $highKEWN){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KEWN_24hi</td>"; 
+                                } elseif ($KEWN_24hi < $highKEWN){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KEWN_24hi</td>";
+                                } else echo "<td>$KEWN_24hi;</td>" ?>
+                    <?php if ($KEWN_24lo > $lowKEWN){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KEWN_24lo</td>"; 
+                                } elseif ($KEWN_24lo < $lowKEWN){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KEWN_24lo</td>";
+                                } else echo "<td>$KEWN_24lo;</td>" ?>
+                    <td><?php echo $KEWN_dewp; ?></td> 
+                    <td><?php echo $KEWN_temp-$KEWN_dewp; ?></td> 
+                    <td><?php echo $KEWN_1pcp; ?></td>
+                    <td><?php echo $KEWN_3pcp; ?></td>
+                    <td><?php echo $KEWN_6pcp; ?></td>
+                    <td><?php echo $KEWN_24pc; ?></td>
+                    <td><?php echo $KEWN_wdir; ?> <?php echo $KEWN_wind; ?></td>
+                    <td><?php echo $KEWN_visi; ?></td> 
+                    <td><?php echo $KEWN_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KFAY</td> 
+                    <td>Fayetteville-Grannis</td> 
+                    <td>Cumberland</td> 
+                    <td>187</td> 
+                    <td><?php echo $KFAY_cond; ?></td> 
+                    <td><?php echo $KFAY_temp; ?></td> 
+                    <td><?php echo $KFAY_6hhi; ?></td> 
+                    <td><?php echo $KFAY_6hlo; ?></td> 
+                    <?php if ($KFAY_24hi > $highKFAY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KFAY_24hi</td>"; 
+                                } elseif ($KFAY_24hi < $highKFAY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KFAY_24hi</td>";
+                                } else echo "<td>$KFAY_24hi;</td>" ?>
+                    <?php if ($KFAY_24lo > $lowKFAY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KFAY_24lo</td>"; 
+                                } elseif ($KFAY_24lo < $lowKFAY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KFAY_24lo</td>";
+                                } else echo "<td>$KFAY_24lo;</td>" ?> 
+                    <td><?php echo $KFAY_dewp; ?></td> 
+                    <td><?php echo $KFAY_temp-$KFAY_dewp; ?></td> 
+                    <td><?php echo $KFAY_1pcp; ?></td>
+                    <td><?php echo $KFAY_3pcp; ?></td>
+                    <td><?php echo $KFAY_6pcp; ?></td>
+                    <td><?php echo $KFAY_24pc; ?></td>
+                    <td><?php echo $KFAY_wdir; ?> <?php echo $KFAY_wind; ?></td>
+                    <td><?php echo $KFAY_visi; ?></td> 
+                    <td><?php echo $KFAY_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGSO</td> 
+                    <td>Greensboro-Piedmont Triad Int'l</td> 
+                    <td>Guilford</td> 
+                    <td>925</td> 
+                    <td><?php echo $KGSO_cond; ?></td> 
+                    <td><?php echo $KGSO_temp; ?></td> 
+                    <td><?php echo $KGSO_6hhi; ?></td> 
+                    <td><?php echo $KGSO_6hlo; ?></td> 
+                    <?php if ($KGSO_24hi > $highKGSO){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGSO_24hi</td>"; 
+                                } elseif ($KGSO_24hi < $highKGSO){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGSO_24hi</td>";
+                                } else echo "<td>$KGSO_24hi;</td>" ?>
+                    <?php if ($KGSO_24lo > $lowKGSO){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KGSO_24lo</td>"; 
+                                } elseif ($KGSO_24lo < $lowKGSO){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KGSO_24lo</td>";
+                                } else echo "<td>$KGSO_24lo;</td>" ?> 
+                    <td><?php echo $KGSO_dewp; ?></td> 
+                    <td><?php echo $KGSO_temp-$KGSO_dewp; ?></td> 
+                    <td><?php echo $KGSO_1pcp; ?></td>
+                    <td><?php echo $KGSO_3pcp; ?></td>
+                    <td><?php echo $KGSO_6pcp; ?></td>
+                    <td><?php echo $KGSO_24pc; ?></td>
+                    <td><?php echo $KGSO_wdir; ?> <?php echo $KGSO_wind; ?></td>
+                    <td><?php echo $KGSO_visi; ?></td> 
+                    <td><?php echo $KGSO_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KHKY</td> 
+                    <td>Hickory</td> 
+                    <td>Catawba</td> 
+                    <td>1188</td> 
+                    <td><?php echo $KHKY_cond; ?></td> 
+                    <td><?php echo $KHKY_temp; ?></td> 
+                    <td><?php echo $KHKY_6hhi; ?></td> 
+                    <td><?php echo $KHKY_6hlo; ?></td> 
+                    <?php if ($KHKY_24hi > $highKHKY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KHKY_24hi</td>"; 
+                                } elseif ($KHKY_24hi < $highKHKY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KHKY_24hi</td>";
+                                } else echo "<td>$KHKY_24hi;</td>" ?>
+                    <?php if ($KHKY_24lo > $lowKHKY){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KHKY_24lo</td>"; 
+                                } elseif ($KHKY_24lo < $lowKHKY){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KHKY_24lo</td>";
+                                } else echo "<td>$KHKY_24lo;</td>" ?>
+                    <td><?php echo $KHKY_dewp; ?></td> 
+                    <td><?php echo $KHKY_temp-$KHKY_dewp; ?></td> 
+                    <td><?php echo $KHKY_1pcp; ?></td>
+                    <td><?php echo $KHKY_3pcp; ?></td>
+                    <td><?php echo $KHKY_6pcp; ?></td>
+                    <td><?php echo $KHKY_24pc; ?></td>
+                    <td><?php echo $KHKY_wdir; ?> <?php echo $KHKY_wind; ?></td>
+                    <td><?php echo $KHKY_visi; ?></td> 
+                    <td><?php echo $KHKY_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KHSE</td> 
+                    <td>Hatteras-Billy Mitchell Field</td> 
+                    <td>Dare</td> 
+                    <td>16</td> 
+                    <td><?php echo $KHSE_cond; ?></td> 
+                    <td><?php echo $KHSE_temp; ?></td> 
+                    <td><?php echo $KHSE_6hhi; ?></td> 
+                    <td><?php echo $KHSE_6hlo; ?></td> 
+                    <?php if ($KHSE_24hi > $highKHSE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KHSE_24hi</td>"; 
+                                } elseif ($KHSE_24hi < $highKHSE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KHSE_24hi</td>";
+                                } else echo "<td>$KHSE_24hi;</td>" ?>
+                    <?php if ($KHSE_24lo > $lowKHSE){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KHSE_24lo</td>"; 
+                                } elseif ($KHSE_24lo < $lowKHSE){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KHSE_24lo</td>";
+                                } else echo "<td>$KHSE_24lo;</td>" ?>
+                    <td><?php echo $KHSE_dewp; ?></td> 
+                    <td><?php echo $KHSE_temp-$KHSE_dewp; ?></td> 
+                    <td><?php echo $KHSE_1pcp; ?></td>
+                    <td><?php echo $KHSE_3pcp; ?></td>
+                    <td><?php echo $KHSE_6pcp; ?></td>
+                    <td><?php echo $KHSE_24pc; ?></td>
+                    <td><?php echo $KHSE_wdir; ?> <?php echo $KHSE_wind; ?></td>
+                    <td><?php echo $KHSE_visi; ?></td> 
+                    <td><?php echo $KHSE_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KILM</td> 
+                    <td>Wilmington</td> 
+                    <td>New Hanover</td> 
+                    <td>23</td> 
+                    <td><?php echo $KILM_cond; ?></td> 
+                    <td><?php echo $KILM_temp; ?></td> 
+                    <td><?php echo $KILM_6hhi; ?></td> 
+                    <td><?php echo $KILM_6hlo; ?></td> 
+                    <?php if ($KILM_24hi > $highKILM){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KILM_24hi</td>"; 
+                                } elseif ($KILM_24hi < $highKILM){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KILM_24hi</td>";
+                                } else echo "<td>$KILM_24hi;</td>" ?>
+                    <?php if ($KILM_24lo > $lowKILM){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KILM_24lo</td>"; 
+                                } elseif ($KILM_24lo < $lowKILM){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KILM_24lo</td>";
+                                } else echo "<td>$KILM_24lo;</td>" ?> 
+                    <td><?php echo $KILM_dewp; ?></td> 
+                    <td><?php echo $KILM_temp-$KILM_dewp; ?></td> 
+                    <td><?php echo $KILM_1pcp; ?></td>
+                    <td><?php echo $KILM_3pcp; ?></td>
+                    <td><?php echo $KILM_6pcp; ?></td>
+                    <td><?php echo $KILM_24pc; ?></td>
+                    <td><?php echo $KILM_wdir; ?> <?php echo $KILM_wind; ?></td>
+                    <td><?php echo $KILM_visi; ?></td> 
+                    <td><?php echo $KILM_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KINT</td> 
+                    <td>Winston-Salem/Smith Reynolds</td> 
+                    <td>Forsyth</td> 
+                    <td>968</td> 
+                    <td><?php echo $KINT_cond; ?></td> 
+                    <td><?php echo $KINT_temp; ?></td> 
+                    <td><?php echo $KINT_6hhi; ?></td> 
+                    <td><?php echo $KINT_6hlo; ?></td> 
+                    <?php if ($KINT_24hi > $highKINT){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KINT_24hi</td>"; 
+                                } elseif ($KINT_24hi < $highKINT){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KINT_24hi</td>";
+                                } else echo "<td>$KINT_24hi;</td>" ?>
+                    <?php if ($KINT_24lo > $lowKINT){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KINT_24lo</td>"; 
+                                } elseif ($KINT_24lo < $lowKINT){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KINT_24lo</td>";
+                                } else echo "<td>$KINT_24lo;</td>" ?>
+                    <td><?php echo $KINT_dewp; ?></td> 
+                    <td><?php echo $KINT_temp-$KINT_dewp; ?></td> 
+                    <td><?php echo $KINT_1pcp; ?></td>
+                    <td><?php echo $KINT_3pcp; ?></td>
+                    <td><?php echo $KINT_6pcp; ?></td>
+                    <td><?php echo $KINT_24pc; ?></td>
+                    <td><?php echo $KINT_wdir; ?> <?php echo $KINT_wind; ?></td>
+                    <td><?php echo $KINT_visi; ?></td> 
+                    <td><?php echo $KINT_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td bgcolor="#BDBDBD">KBLT</td> 
+                    <td bgcolor="#BDBDBD">Lumberton Municipal</td> 
+                    <td bgcolor="#BDBDBD">Robeson</td> 
+                    <td bgcolor="#BDBDBD">118</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td> 
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">-</td>
+                    <td bgcolor="#BDBDBD">Out of service until 2020</td> 
+                </tr>
+                <tr>
+                    <td>KMEB</td> 
+                    <td>Laurinburg-Maxton</td> 
+                    <td>Scotland</td> 
+                    <td>210</td> 
+                    <td><?php echo $KMEB_cond; ?></td> 
+                    <td><?php echo $KMEB_temp; ?></td> 
+                    <td><?php echo $KMEB_6hhi; ?></td> 
+                    <td><?php echo $KMEB_6hlo; ?></td> 
+                    <?php if ($KMEB_24hi > $highKMEB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KMEB_24hi</td>"; 
+                                } elseif ($KMEB_24hi < $highKMEB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KMEB_24hi</td>";
+                                } else echo "<td>$KMEB_24hi;</td>" ?>
+                    <?php if ($KMEB_24lo > $lowKMEB){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KMEB_24lo</td>"; 
+                                } elseif ($KMEB_24lo < $lowKMEB){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KMEB_24lo</td>";
+                                } else echo "<td>$KMEB_24lo;</td>" ?>
+                    <td><?php echo $KMEB_dewp; ?></td> 
+                    <td><?php echo $KMEB_temp-$KMEB_dewp; ?></td> 
+                    <td><?php echo $KMEB_1pcp; ?></td>
+                    <td><?php echo $KMEB_3pcp; ?></td>
+                    <td><?php echo $KMEB_6pcp; ?></td>
+                    <td><?php echo $KMEB_24pc; ?></td>
+                    <td><?php echo $KMEB_wdir; ?> <?php echo $KMEB_wind; ?></td>
+                    <td><?php echo $KMEB_visi; ?></td> 
+                    <td><?php echo $KMEB_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KMRH</td> 
+                    <td>Beaufort-Michael J. Smith</td> 
+                    <td>Carteret</td> 
+                    <td>3</td> 
+                    <td><?php echo $KMRH_cond; ?></td> 
+                    <td><?php echo $KMRH_temp; ?></td> 
+                    <td><?php echo $KMRH_6hhi; ?></td> 
+                    <td><?php echo $KMRH_6hlo; ?></td> 
+                    <?php if ($KMRH_24hi > $highKMRH){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KMRH_24hi</td>"; 
+                                } elseif ($KMRH_24hi < $highKMRH){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KMRH_24hi</td>";
+                                } else echo "<td>$KMRH_24hi;</td>" ?>
+                    <?php if ($KMRH_24lo > $lowKMRH){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KMRH_24lo</td>"; 
+                                } elseif ($KMRH_24lo < $lowKMRH){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KMRH_24lo</td>";
+                                } else echo "<td>$KMRH_24lo;</td>" ?>
+                    <td><?php echo $KMRH_dewp; ?></td> 
+                    <td><?php echo $KMRH_temp-$KMRH_dewp; ?></td> 
+                    <td><?php echo $KMRH_1pcp; ?></td>
+                    <td><?php echo $KMRH_3pcp; ?></td>
+                    <td><?php echo $KMRH_6pcp; ?></td>
+                    <td><?php echo $KMRH_24pc; ?></td>
+                    <td><?php echo $KMRH_wdir; ?> <?php echo $KMRH_wind; ?></td>
+                    <td><?php echo $KMRH_visi; ?></td> 
+                    <td><?php echo $KMRH_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KRDU</td> 
+                    <td>Raleigh-Durham Int'l</td> 
+                    <td>Wake</td> 
+                    <td>394</td> 
+                    <td><?php echo $KRDU_cond; ?></td> 
+                    <td><?php echo $KRDU_temp; ?></td>
+                    <td><?php echo $KRDU_6hhi; ?></td> 
+                    <td><?php echo $KRDU_6hlo; ?></td> 
+                    <?php if ($KRDU_24hi > $highKRDU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KRDU_24hi</td>"; 
+                                } elseif ($KRDU_24hi < $highKRDU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KRDU_24hi</td>";
+                                } else echo "<td>$KRDU_24hi;</td>" ?>
+                    <?php if ($KRDU_24lo > $lowKRDU){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KRDU_24lo</td>"; 
+                                } elseif ($KRDU_24lo < $lowKRDU){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KRDU_24lo</td>";
+                                } else echo "<td>$KRDU_24lo;</td>" ?> 
+                    <td><?php echo $KRDU_dewp; ?></td> 
+                    <td><?php echo $KRDU_temp-$KRDU_dewp; ?></td> 
+                    <td><?php echo $KRDU_1pcp; ?></td>
+                    <td><?php echo $KRDU_3pcp; ?></td>
+                    <td><?php echo $KRDU_6pcp; ?></td>
+                    <td><?php echo $KRDU_24pc; ?></td>
+                    <td><?php echo $KRDU_wdir; ?> <?php echo $KRDU_wind; ?></td>
+                    <td><?php echo $KRDU_visi; ?></td> 
+                    <td><?php echo $KRDU_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KRWI</td> 
+                    <td>Rocky Mount</td> 
+                    <td>Wilson</td> 
+                    <td>161</td> 
+                    <td><?php echo $KRWI_cond; ?></td> 
+                    <td><?php echo $KRWI_temp; ?></td> 
+                    <td><?php echo $KRWI_6hhi; ?></td> 
+                    <td><?php echo $KRWI_6hlo; ?></td> 
+                    <?php if ($KRWI_24hi > $highKRWI){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KRWI_24hi</td>"; 
+                                } elseif ($KRWI_24hi < $highKRWI){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KRWI_24hi</td>";
+                                } else echo "<td>$KRWI_24hi;</td>" ?>
+                    <?php if ($KRWI_24lo > $lowKRWI){
+                                echo "<td style=\"background-color: #FF6B6B;\">$KRWI_24lo</td>"; 
+                                } elseif ($KRWI_24lo < $lowKRWI){
+                                echo "<td style=\"background-color: #6BA3FF;\">$KRWI_24lo</td>";
+                                } else echo "<td>$KRWI_24lo;</td>" ?>
+                    <td><?php echo $KRWI_dewp; ?></td> 
+                    <td><?php echo $KRWI_temp-$KRWI_dewp; ?></td> 
+                    <td><?php echo $KRWI_1pcp; ?></td>
+                    <td><?php echo $KRWI_3pcp; ?></td>
+                    <td><?php echo $KRWI_6pcp; ?></td>
+                    <td><?php echo $KRWI_24pc; ?></td>
+                    <td><?php echo $KRWI_wdir; ?> <?php echo $KRWI_wind; ?></td>
+                    <td><?php echo $KRWI_visi; ?></td> 
+                    <td><?php echo $KRWI_metr; ?></td> 
+                </tr>
+            </tbody>
+            </table>
+            
+            
+            
+<br>
+<p>NORTH CAROLINA AWOS</p>
+            <table class="ncawos" id="ncawos">
+                <thead>
+                <tr>
+                    <th width="3%">ID</th>
+                    <th width="13%">Location</th>
+                    <th width="5%">County</th>
+                    <th data-tsorter="numeric" width="3%">Elev (ft)</th>
+                    <th width="6%">Wx</th>
+                    <th data-tsorter="numeric" width="4%">Temp (F)</th>
+                    <th data-tsorter="numeric" width="4%">24hrHi</th>
+                    <th data-tsorter="numeric" width="4%">24hrLo</th>
+                    <th data-tsorter="numeric" width="4%">Tdew</th>
+                    <th data-tsorter="numeric" width="4%">T-Tdew</th>
+                    <th data-tsorter="numeric" width="4%">1hrPcp</th>
+                    <th width="5%">Wind</th>
+                    <th data-tsorter="numeric" width="3%">Vis</th>
+                    <th width="38%">METAR</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>KASJ</td> 
+                    <td>Tri-County Airport, Ahoskie</td> 
+                    <td>Hertford</td> 
+                    <td>69</td> 
+                    <td><?php echo $KASJ_cond; ?></td> 
+                    <td><?php echo $KASJ_temp; ?></td> 
+                    <td><?php echo $KASJ_24hi; ?></td> 
+                    <td><?php echo $KASJ_24lo; ?></td> 
+                    <td><?php echo $KASJ_dewp; ?></td> 
+                    <td><?php echo $KASJ_temp-$KASJ_dewp; ?></td> 
+                    <td><?php echo $KASJ_1pcp; ?></td>
+                    <td><?php echo $KASJ_wdir; ?> <?php echo $KASJ_wind; ?></td>
+                    <td><?php echo $KASJ_visi; ?></td> 
+                    <td><?php echo $KASJ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCPC</td> 
+                    <td>Columbus County Municipal Airport, Whiteville</td> 
+                    <td>Columbus</td> 
+                    <td>98</td> 
+                    <td><?php echo $KCPC_cond; ?></td> 
+                    <td><?php echo $KCPC_temp; ?></td> 
+                    <td><?php echo $KCPC_24hi; ?></td> 
+                    <td><?php echo $KCPC_24lo; ?></td> 
+                    <td><?php echo $KCPC_dewp; ?></td> 
+                    <td><?php echo $KCPC_temp-$KCPC_dewp; ?></td> 
+                    <td><?php echo $KCPC_1pcp; ?></td>
+                    <td><?php echo $KCPC_wdir; ?> <?php echo $KCPC_wind; ?></td>
+                    <td><?php echo $KCPC_visi; ?></td> 
+                    <td><?php echo $KCPC_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KCTZ</td> 
+                    <td>Sampson County Airport, Clinton</td> 
+                    <td>Sampson</td> 
+                    <td>141</td> 
+                    <td><?php echo $KCTZ_cond; ?></td> 
+                    <td><?php echo $KCTZ_temp; ?></td> 
+                    <td><?php echo $KCTZ_24hi; ?></td> 
+                    <td><?php echo $KCTZ_24lo; ?></td> 
+                    <td><?php echo $KCTZ_dewp; ?></td> 
+                    <td><?php echo $KCTZ_temp-$KCTZ_dewp; ?></td> 
+                    <td><?php echo $KCTZ_1pcp; ?></td>
+                    <td><?php echo $KCTZ_wdir; ?> <?php echo $KCTZ_wind; ?></td>
+                    <td><?php echo $KCTZ_visi; ?></td> 
+                    <td><?php echo $KCTZ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KDPL</td> 
+                    <td>Duplin County Airport, Kenansville</td> 
+                    <td>Duplin</td> 
+                    <td>128</td> 
+                    <td><?php echo $KDPL_cond; ?></td> 
+                    <td><?php echo $KDPL_temp; ?></td> 
+                    <td><?php echo $KDPL_24hi; ?></td> 
+                    <td><?php echo $KDPL_24lo; ?></td> 
+                    <td><?php echo $KDPL_dewp; ?></td> 
+                    <td><?php echo $KDPL_temp-$KDPL_dewp; ?></td> 
+                    <td><?php echo $KDPL_1pcp; ?></td>
+                    <td><?php echo $KDPL_wdir; ?> <?php echo $KDPL_wind; ?></td>
+                    <td><?php echo $KDPL_visi; ?></td> 
+                    <td><?php echo $KDPL_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEDE</td> 
+                    <td>Northeastern Regional Airport, Edenton</td> 
+                    <td>Chowan</td> 
+                    <td>20</td> 
+                    <td><?php echo $KEDE_cond; ?></td> 
+                    <td><?php echo $KEDE_temp; ?></td> 
+                    <td><?php echo $KEDE_24hi; ?></td> 
+                    <td><?php echo $KEDE_24lo; ?></td> 
+                    <td><?php echo $KEDE_dewp; ?></td> 
+                    <td><?php echo $KEDE_temp-$KEDE_dewp; ?></td> 
+                    <td><?php echo $KEDE_1pcp; ?></td>
+                    <td><?php echo $KEDE_wdir; ?> <?php echo $KEDE_wind; ?></td>
+                    <td><?php echo $KEDE_visi; ?></td> 
+                    <td><?php echo $KEDE_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEXX</td> 
+                    <td>Davidson County Airport, Lexington</td> 
+                    <td>Davidson</td> 
+                    <td>732</td> 
+                    <td><?php echo $KEXX_cond; ?></td> 
+                    <td><?php echo $KEXX_temp; ?></td> 
+                    <td><?php echo $KEXX_24hi; ?></td> 
+                    <td><?php echo $KEXX_24lo; ?></td> 
+                    <td><?php echo $KEXX_dewp; ?></td> 
+                    <td><?php echo $KEXX_temp-$KEXX_dewp; ?></td> 
+                    <td><?php echo $KEXX_1pcp; ?></td>
+                    <td><?php echo $KEXX_wdir; ?> <?php echo $KEXX_wind; ?></td>
+                    <td><?php echo $KEXX_visi; ?></td> 
+                    <td><?php echo $KEXX_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KFQD</td> 
+                    <td>Rutherford County-Marchman Field Airport, Rutherfordton</td> 
+                    <td>Rutherford</td> 
+                    <td>1079</td> 
+                    <td><?php echo $KFQD_cond; ?></td> 
+                    <td><?php echo $KFQD_temp; ?></td> 
+                    <td><?php echo $KFQD_24hi; ?></td> 
+                    <td><?php echo $KFQD_24lo; ?></td> 
+                    <td><?php echo $KFQD_dewp; ?></td> 
+                    <td><?php echo $KFQD_temp-$KFQD_dewp; ?></td> 
+                    <td><?php echo $KFQD_1pcp; ?></td>
+                    <td><?php echo $KFQD_wdir; ?> <?php echo $KFQD_wind; ?></td>
+                    <td><?php echo $KFQD_visi; ?></td> 
+                    <td><?php echo $KFQD_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGEV</td> 
+                    <td>Ashe County Airport, Jefferson</td> 
+                    <td>Ashe</td> 
+                    <td>3056</td> 
+                    <td><?php echo $KGEV_cond; ?></td> 
+                    <td><?php echo $KGEV_temp; ?></td> 
+                    <td><?php echo $KGEV_24hi; ?></td> 
+                    <td><?php echo $KGEV_24lo; ?></td> 
+                    <td><?php echo $KGEV_dewp; ?></td> 
+                    <td><?php echo $KGEV_temp-$KGEV_dewp; ?></td> 
+                    <td><?php echo $KGEV_1pcp; ?></td>
+                    <td><?php echo $KGEV_wdir; ?> <?php echo $KGEV_wind; ?></td>
+                    <td><?php echo $KGEV_visi; ?></td> 
+                    <td><?php echo $KGEV_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KGWW</td> 
+                    <td>Goldsboro-Wayne Municipal Airport, Goldsboro</td> 
+                    <td>Wayne</td> 
+                    <td>131</td> 
+                    <td><?php echo $KGWW_cond; ?></td> 
+                    <td><?php echo $KGWW_temp; ?></td> 
+                    <td><?php echo $KGWW_24hi; ?></td> 
+                    <td><?php echo $KGWW_24lo; ?></td> 
+                    <td><?php echo $KGWW_dewp; ?></td> 
+                    <td><?php echo $KGWW_temp-$KGWW_dewp; ?></td> 
+                    <td><?php echo $KGWW_1pcp; ?></td>
+                    <td><?php echo $KGWW_wdir; ?> <?php echo $KGWW_wind; ?></td>
+                    <td><?php echo $KGWW_visi; ?></td> 
+                    <td><?php echo $KGWW_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KHBI</td> 
+                    <td>Asheboro Municipal Airport, Asheboro</td> 
+                    <td>Randolph</td> 
+                    <td>673</td> 
+                    <td><?php echo $KHBI_cond; ?></td> 
+                    <td><?php echo $KHBI_temp; ?></td> 
+                    <td><?php echo $KHBI_24hi; ?></td> 
+                    <td><?php echo $KHBI_24lo; ?></td> 
+                    <td><?php echo $KHBI_dewp; ?></td> 
+                    <td><?php echo $KHBI_temp-$KHBI_dewp; ?></td> 
+                    <td><?php echo $KHBI_1pcp; ?></td>
+                    <td><?php echo $KHBI_wdir; ?> <?php echo $KHBI_wind; ?></td>
+                    <td><?php echo $KHBI_visi; ?></td> 
+                    <td><?php echo $KHBI_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KHNZ</td> 
+                    <td>Henderson-Oxford Airport</td> 
+                    <td>Granville</td> 
+                    <td>515</td> 
+                    <td><?php echo $KHNZ_cond; ?></td> 
+                    <td><?php echo $KHNZ_temp; ?></td> 
+                    <td><?php echo $KHNZ_24hi; ?></td> 
+                    <td><?php echo $KHNZ_24lo; ?></td> 
+                    <td><?php echo $KHNZ_dewp; ?></td> 
+                    <td><?php echo $KHNZ_temp-$KHNZ_dewp; ?></td> 
+                    <td><?php echo $KHNZ_1pcp; ?></td>
+                    <td><?php echo $KHNZ_wdir; ?> <?php echo $KHNZ_wind; ?></td>
+                    <td><?php echo $KHNZ_visi; ?></td> 
+                    <td><?php echo $KHNZ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KHRJ</td> 
+                    <td>Harnett County Airport, Erwin</td> 
+                    <td>Harnett</td> 
+                    <td>197</td> 
+                    <td><?php echo $KHRJ_cond; ?></td> 
+                    <td><?php echo $KHRJ_temp; ?></td> 
+                    <td><?php echo $KHRJ_24hi; ?></td> 
+                    <td><?php echo $KHRJ_24lo; ?></td> 
+                    <td><?php echo $KHRJ_dewp; ?></td> 
+                    <td><?php echo $KHRJ_temp-$KHRJ_dewp; ?></td> 
+                    <td><?php echo $KHRJ_1pcp; ?></td>
+                    <td><?php echo $KHRJ_wdir; ?> <?php echo $KHRJ_wind; ?></td>
+                    <td><?php echo $KHRJ_visi; ?></td> 
+                    <td><?php echo $KHRJ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KIPJ</td> 
+                    <td>Lincolnton-Lincoln County Regional Airport, Lincolnton</td> 
+                    <td>Lincoln</td> 
+                    <td>876</td> 
+                    <td><?php echo $KIPJ_cond; ?></td> 
+                    <td><?php echo $KIPJ_temp; ?></td> 
+                    <td><?php echo $KIPJ_24hi; ?></td> 
+                    <td><?php echo $KIPJ_24lo; ?></td> 
+                    <td><?php echo $KIPJ_dewp; ?></td> 
+                    <td><?php echo $KIPJ_temp-$KIPJ_dewp; ?></td> 
+                    <td><?php echo $KIPJ_1pcp; ?></td>
+                    <td><?php echo $KIPJ_wdir; ?> <?php echo $KIPJ_wind; ?></td>
+                    <td><?php echo $KIPJ_visi; ?></td> 
+                    <td><?php echo $KIPJ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KISO</td> 
+                    <td>Kinston Regional Jetport at Stallings Field</td> 
+                    <td>Lenoir</td> 
+                    <td>95</td> 
+                    <td><?php echo $KISO_cond; ?></td> 
+                    <td><?php echo $KISO_temp; ?></td> 
+                    <td><?php echo $KISO_24hi; ?></td> 
+                    <td><?php echo $KISO_24lo; ?></td> 
+                    <td><?php echo $KISO_dewp; ?></td> 
+                    <td><?php echo $KISO_temp-$KISO_dewp; ?></td> 
+                    <td><?php echo $KISO_1pcp; ?></td>
+                    <td><?php echo $KISO_wdir; ?> <?php echo $KISO_wind; ?></td>
+                    <td><?php echo $KISO_visi; ?></td> 
+                    <td><?php echo $KISO_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KJNX</td> 
+                    <td>Johnston County Airport, Smithfield</td> 
+                    <td>Johnston</td> 
+                    <td>164</td> 
+                    <td><?php echo $KJNX_cond; ?></td> 
+                    <td><?php echo $KJNX_temp; ?></td> 
+                    <td><?php echo $KJNX_24hi; ?></td> 
+                    <td><?php echo $KJNX_24lo; ?></td> 
+                    <td><?php echo $KJNX_dewp; ?></td> 
+                    <td><?php echo $KJNX_temp-$KJNX_dewp; ?></td> 
+                    <td><?php echo $KJNX_1pcp; ?></td>
+                    <td><?php echo $KJNX_wdir; ?> <?php echo $KJNX_wind; ?></td>
+                    <td><?php echo $KJNX_visi; ?></td> 
+                    <td><?php echo $KJNX_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KJQF</td> 
+                    <td>Concord Regional Airport</td> 
+                    <td>Cabarrus</td> 
+                    <td>666</td> 
+                    <td><?php echo $KJQF_cond; ?></td> 
+                    <td><?php echo $KJQF_temp; ?></td> 
+                    <td><?php echo $KJQF_24hi; ?></td> 
+                    <td><?php echo $KJQF_24lo; ?></td> 
+                    <td><?php echo $KJQF_dewp; ?></td> 
+                    <td><?php echo $KJQF_temp-$KJQF_dewp; ?></td> 
+                    <td><?php echo $KJQF_1pcp; ?></td>
+                    <td><?php echo $KJQF_wdir; ?> <?php echo $KJQF_wind; ?></td>
+                    <td><?php echo $KJQF_visi; ?></td> 
+                    <td><?php echo $KJQF_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KMQI</td> 
+                    <td>Manteo/Dare County Regional Airport</td> 
+                    <td>Dare</td> 
+                    <td>13</td> 
+                    <td><?php echo $KMQI_cond; ?></td> 
+                    <td><?php echo $KMQI_temp; ?></td> 
+                    <td><?php echo $KMQI_24hi; ?></td> 
+                    <td><?php echo $KMQI_24lo; ?></td> 
+                    <td><?php echo $KMQI_dewp; ?></td> 
+                    <td><?php echo $KMQI_temp-$KMQI_dewp; ?></td> 
+                    <td><?php echo $KMQI_1pcp; ?></td>
+                    <td><?php echo $KMQI_wdir; ?> <?php echo $KMQI_wind; ?></td>
+                    <td><?php echo $KMQI_visi; ?></td> 
+                    <td><?php echo $KMQI_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KMRN</td> 
+                    <td>Morganton-Lenoir Airport</td> 
+                    <td>Burke/Caldwell</td> 
+                    <td>1227</td> 
+                    <td><?php echo $KMRN_cond; ?></td> 
+                    <td><?php echo $KMRN_temp; ?></td> 
+                    <td><?php echo $KMRN_24hi; ?></td> 
+                    <td><?php echo $KMRN_24lo; ?></td> 
+                    <td><?php echo $KMRN_dewp; ?></td> 
+                    <td><?php echo $KMRN_temp-$KMRN_dewp; ?></td> 
+                    <td><?php echo $KMRN_1pcp; ?></td>
+                    <td><?php echo $KMRN_wdir; ?> <?php echo $KMRN_wind; ?></td>
+                    <td><?php echo $KMRN_visi; ?></td> 
+                    <td><?php echo $KMRN_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KMWK</td> 
+                    <td>Mount Airy/Surry County Airport</td> 
+                    <td>Surry</td> 
+                    <td>1224</td> 
+                    <td><?php echo $KMWK_cond; ?></td> 
+                    <td><?php echo $KMWK_temp; ?></td> 
+                    <td><?php echo $KMWK_24hi; ?></td> 
+                    <td><?php echo $KMWK_24lo; ?></td> 
+                    <td><?php echo $KMWK_dewp; ?></td> 
+                    <td><?php echo $KMWK_temp-$KMWK_dewp; ?></td> 
+                    <td><?php echo $KMWK_1pcp; ?></td>
+                    <td><?php echo $KMWK_wdir; ?> <?php echo $KMWK_wind; ?></td>
+                    <td><?php echo $KMWK_visi; ?></td> 
+                    <td><?php echo $KMWK_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KOAJ</td> 
+                    <td>Albert J. Ellis Airport, Jacksonville</td> 
+                    <td>Onslow</td> 
+                    <td>95</td> 
+                    <td><?php echo $KOAJ_cond; ?></td> 
+                    <td><?php echo $KOAJ_temp; ?></td> 
+                    <td><?php echo $KOAJ_24hi; ?></td> 
+                    <td><?php echo $KOAJ_24lo; ?></td> 
+                    <td><?php echo $KOAJ_dewp; ?></td> 
+                    <td><?php echo $KOAJ_temp-$KOAJ_dewp; ?></td> 
+                    <td><?php echo $KOAJ_1pcp; ?></td>
+                    <td><?php echo $KOAJ_wdir; ?> <?php echo $KOAJ_wind; ?></td>
+                    <td><?php echo $KOAJ_visi; ?></td> 
+                    <td><?php echo $KOAJ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KOCW</td> 
+                    <td>Warren Field Airport, Washington</td> 
+                    <td>Beaufort</td> 
+                    <td>39</td> 
+                    <td><?php echo $KOCW_cond; ?></td> 
+                    <td><?php echo $KOCW_temp; ?></td> 
+                    <td><?php echo $KOCW_24hi; ?></td> 
+                    <td><?php echo $KOCW_24lo; ?></td> 
+                    <td><?php echo $KOCW_dewp; ?></td> 
+                    <td><?php echo $KOCW_temp-$KOCW_dewp; ?></td> 
+                    <td><?php echo $KOCW_1pcp; ?></td>
+                    <td><?php echo $KOCW_wdir; ?> <?php echo $KOCW_wind; ?></td>
+                    <td><?php echo $KOCW_visi; ?></td> 
+                    <td><?php echo $KOCW_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KPGV</td> 
+                    <td>Pitt-Greenville Airport</td> 
+                    <td>Pitt</td> 
+                    <td>20</td> 
+                    <td><?php echo $KPGV_cond; ?></td> 
+                    <td><?php echo $KPGV_temp; ?></td> 
+                    <td><?php echo $KPGV_24hi; ?></td> 
+                    <td><?php echo $KPGV_24lo; ?></td> 
+                    <td><?php echo $KPGV_dewp; ?></td> 
+                    <td><?php echo $KPGV_temp-$KPGV_dewp; ?></td> 
+                    <td><?php echo $KPGV_1pcp; ?></td>
+                    <td><?php echo $KPGV_wdir; ?> <?php echo $KPGV_wind; ?></td>
+                    <td><?php echo $KPGV_visi; ?></td> 
+                    <td><?php echo $KPGV_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KRHP</td> 
+                    <td>Andrews-Murphy Airport</td> 
+                    <td>Cherokee</td> 
+                    <td>1686</td> 
+                    <td><?php echo $KRHP_cond; ?></td> 
+                    <td><?php echo $KRHP_temp; ?></td> 
+                    <td><?php echo $KRHP_24hi; ?></td> 
+                    <td><?php echo $KRHP_24lo; ?></td> 
+                    <td><?php echo $KRHP_dewp; ?></td> 
+                    <td><?php echo $KRHP_temp-$KRHP_dewp; ?></td> 
+                    <td><?php echo $KRHP_1pcp; ?></td>
+                    <td><?php echo $KRHP_wdir; ?> <?php echo $KRHP_wind; ?></td>
+                    <td><?php echo $KRHP_visi; ?></td> 
+                    <td><?php echo $KRHP_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KSOP</td> 
+                    <td>Pinehurst/Southern Pines, Moore County Airport"</td> 
+                    <td>Moore</td> 
+                    <td>463</td> 
+                    <td><?php echo $KSOP_cond; ?></td> 
+                    <td><?php echo $KSOP_temp; ?></td> 
+                    <td><?php echo $KSOP_24hi; ?></td> 
+                    <td><?php echo $KSOP_24lo; ?></td> 
+                    <td><?php echo $KSOP_dewp; ?></td> 
+                    <td><?php echo $KSOP_temp-$KSOP_dewp; ?></td> 
+                    <td><?php echo $KSOP_1pcp; ?></td>
+                    <td><?php echo $KSOP_wdir; ?> <?php echo $KSOP_wind; ?></td>
+                    <td><?php echo $KSOP_visi; ?></td> 
+                    <td><?php echo $KSOP_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KSUT</td> 
+                    <td>Brunswick County Airport</td> 
+                    <td>Brunswick</td> 
+                    <td>16</td> 
+                    <td><?php echo $KSUT_cond; ?></td> 
+                    <td><?php echo $KSUT_temp; ?></td> 
+                    <td><?php echo $KSUT_24hi; ?></td> 
+                    <td><?php echo $KSUT_24lo; ?></td> 
+                    <td><?php echo $KSUT_dewp; ?></td> 
+                    <td><?php echo $KSUT_temp-$KSUT_dewp; ?></td> 
+                    <td><?php echo $KSUT_1pcp; ?></td>
+                    <td><?php echo $KSUT_wdir; ?> <?php echo $KSUT_wind; ?></td>
+                    <td><?php echo $KSUT_visi; ?></td> 
+                    <td><?php echo $KSUT_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KSVH</td> 
+                    <td>Statesville Municipal Airport</td> 
+                    <td>Iredell</td> 
+                    <td>935</td> 
+                    <td><?php echo $KSVH_cond; ?></td> 
+                    <td><?php echo $KSVH_temp; ?></td> 
+                    <td><?php echo $KSVH_24hi; ?></td> 
+                    <td><?php echo $KSVH_24lo; ?></td> 
+                    <td><?php echo $KSVH_dewp; ?></td> 
+                    <td><?php echo $KSVH_temp-$KSVH_dewp; ?></td> 
+                    <td><?php echo $KSVH_1pcp; ?></td>
+                    <td><?php echo $KSVH_wdir; ?> <?php echo $KSVH_wind; ?></td>
+                    <td><?php echo $KSVH_visi; ?></td> 
+                    <td><?php echo $KSVH_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KTDF</td> 
+                    <td>Roxboro, Person County Airport</td> 
+                    <td>Person</td> 
+                    <td>610</td> 
+                    <td><?php echo $KTDF_cond; ?></td> 
+                    <td><?php echo $KTDF_temp; ?></td> 
+                    <td><?php echo $KTDF_24hi; ?></td> 
+                    <td><?php echo $KTDF_24lo; ?></td> 
+                    <td><?php echo $KTDF_dewp; ?></td> 
+                    <td><?php echo $KTDF_temp-$KTDF_dewp; ?></td> 
+                    <td><?php echo $KTDF_1pcp; ?></td>
+                    <td><?php echo $KTDF_wdir; ?> <?php echo $KTDF_wind; ?></td>
+                    <td><?php echo $KTDF_visi; ?></td> 
+                    <td><?php echo $KTDF_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KTTA</td> 
+                    <td>Sanford, Sanford-Lee County Regional Airport</td> 
+                    <td>Lee</td> 
+                    <td>246</td> 
+                    <td><?php echo $KTTA_cond; ?></td> 
+                    <td><?php echo $KTTA_temp; ?></td> 
+                    <td><?php echo $KTTA_24hi; ?></td> 
+                    <td><?php echo $KTTA_24lo; ?></td> 
+                    <td><?php echo $KTTA_dewp; ?></td> 
+                    <td><?php echo $KTTA_temp-$KTTA_dewp; ?></td> 
+                    <td><?php echo $KTTA_1pcp; ?></td>
+                    <td><?php echo $KTTA_wdir; ?> <?php echo $KTTA_wind; ?></td>
+                    <td><?php echo $KTTA_visi; ?></td> 
+                    <td><?php echo $KTTA_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KUKF</td> 
+                    <td>North Wilkesboro, Wilkes County Airport</td> 
+                    <td>Wilkes</td> 
+                    <td>1299</td> 
+                    <td><?php echo $KUKF_cond; ?></td> 
+                    <td><?php echo $KUKF_temp; ?></td> 
+                    <td><?php echo $KUKF_24hi; ?></td> 
+                    <td><?php echo $KUKF_24lo; ?></td> 
+                    <td><?php echo $KUKF_dewp; ?></td> 
+                    <td><?php echo $KUKF_temp-$KUKF_dewp; ?></td> 
+                    <td><?php echo $KUKF_1pcp; ?></td>
+                    <td><?php echo $KUKF_wdir; ?> <?php echo $KUKF_wind; ?></td>
+                    <td><?php echo $KUKF_visi; ?></td> 
+                    <td><?php echo $KUKF_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KVUJ</td> 
+                    <td>Albemarle, Stanly County Airport</td> 
+                    <td>Stanly</td> 
+                    <td>610</td> 
+                    <td><?php echo $KVUJ_cond; ?></td> 
+                    <td><?php echo $KVUJ_temp; ?></td> 
+                    <td><?php echo $KVUJ_24hi; ?></td> 
+                    <td><?php echo $KVUJ_24lo; ?></td> 
+                    <td><?php echo $KVUJ_dewp; ?></td> 
+                    <td><?php echo $KVUJ_temp-$KVUJ_dewp; ?></td> 
+                    <td><?php echo $KVUJ_1pcp; ?></td>
+                    <td><?php echo $KVUJ_wdir; ?> <?php echo $KVUJ_wind; ?></td>
+                    <td><?php echo $KVUJ_visi; ?></td> 
+                    <td><?php echo $KVUJ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>K1A5</td> 
+                    <td>Macon County Airport</td> 
+                    <td>Macon</td> 
+                    <td>2001</td> 
+                    <td><?php echo $K1A5_cond; ?></td> 
+                    <td><?php echo $K1A5_temp; ?></td> 
+                    <td><?php echo $K1A5_24hi; ?></td> 
+                    <td><?php echo $K1A5_24lo; ?></td> 
+                    <td><?php echo $K1A5_dewp; ?></td> 
+                    <td><?php echo $K1A5_temp-$K1A5_dewp; ?></td> 
+                    <td><?php echo $K1A5_1pcp; ?></td>
+                    <td><?php echo $K1A5_wdir; ?> <?php echo $K1A5_wind; ?></td>
+                    <td><?php echo $K1A5_visi; ?></td> 
+                    <td><?php echo $K1A5_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KRCZ</td> 
+                    <td>Rockingham-Hamlet Airport</td> 
+                    <td>Richmond</td> 
+                    <td>358</td> 
+                    <td><?php echo $KRCZ_cond; ?></td> 
+                    <td><?php echo $KRCZ_temp; ?></td> 
+                    <td><?php echo $KRCZ_24hi; ?></td> 
+                    <td><?php echo $KRCZ_24lo; ?></td> 
+                    <td><?php echo $KRCZ_dewp; ?></td> 
+                    <td><?php echo $KRCZ_temp-$KRCZ_dewp; ?></td> 
+                    <td><?php echo $KRCZ_1pcp; ?></td>
+                    <td><?php echo $KRCZ_wdir; ?> <?php echo $KRCZ_wind; ?></td>
+                    <td><?php echo $KRCZ_visi; ?></td> 
+                    <td><?php echo $KRCZ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEHO</td> 
+                    <td>Shelby Municipal Airport</td> 
+                    <td>Cleveland</td> 
+                    <td>853</td> 
+                    <td><?php echo $KEHO_cond; ?></td> 
+                    <td><?php echo $KEHO_temp; ?></td> 
+                    <td><?php echo $KEHO_24hi; ?></td> 
+                    <td><?php echo $KEHO_24lo; ?></td> 
+                    <td><?php echo $KEHO_dewp; ?></td> 
+                    <td><?php echo $KEHO_temp-$KEHO_dewp; ?></td> 
+                    <td><?php echo $KEHO_1pcp; ?></td>
+                    <td><?php echo $KEHO_wdir; ?> <?php echo $KEHO_wind; ?></td>
+                    <td><?php echo $KEHO_visi; ?></td> 
+                    <td><?php echo $KEHO_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KEYF</td> 
+                    <td>Curtis L. Brown Jr. Field Airport, Elizabethtown</td> 
+                    <td>Bladen</td> 
+                    <td>125</td> 
+                    <td><?php echo $KEYF_cond; ?></td> 
+                    <td><?php echo $KEYF_temp; ?></td> 
+                    <td><?php echo $KEYF_24hi; ?></td> 
+                    <td><?php echo $KEYF_24lo; ?></td> 
+                    <td><?php echo $KEYF_dewp; ?></td> 
+                    <td><?php echo $KEYF_temp-$KEYF_dewp; ?></td> 
+                    <td><?php echo $KEYF_1pcp; ?></td>
+                    <td><?php echo $KEYF_wdir; ?> <?php echo $KEYF_wind; ?></td>
+                    <td><?php echo $KEYF_visi; ?></td> 
+                    <td><?php echo $KEYF_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KFFA</td> 
+                    <td>Kill Devil Hills, First Flight Airport</td> 
+                    <td>Dare</td> 
+                    <td>13</td> 
+                    <td><?php echo $KFFA_cond; ?></td> 
+                    <td><?php echo $KFFA_temp; ?></td> 
+                    <td><?php echo $KFFA_24hi; ?></td> 
+                    <td><?php echo $KFFA_24lo; ?></td> 
+                    <td><?php echo $KFFA_dewp; ?></td> 
+                    <td><?php echo $KFFA_temp-$KFFA_dewp; ?></td> 
+                    <td><?php echo $KFFA_1pcp; ?></td>
+                    <td><?php echo $KFFA_wdir; ?> <?php echo $KFFA_wind; ?></td>
+                    <td><?php echo $KFFA_visi; ?></td> 
+                    <td><?php echo $KFFA_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KLHZ</td> 
+                    <td>Franklin County Airport</td> 
+                    <td>Franklin</td> 
+                    <td>341</td> 
+                    <td><?php echo $KLHZ_cond; ?></td> 
+                    <td><?php echo $KLHZ_temp; ?></td> 
+                    <td><?php echo $KLHZ_24hi; ?></td> 
+                    <td><?php echo $KLHZ_24lo; ?></td> 
+                    <td><?php echo $KLHZ_dewp; ?></td> 
+                    <td><?php echo $KLHZ_temp-$KLHZ_dewp; ?></td> 
+                    <td><?php echo $KLHZ_1pcp; ?></td>
+                    <td><?php echo $KLHZ_wdir; ?> <?php echo $KLHZ_wind; ?></td>
+                    <td><?php echo $KLHZ_visi; ?></td> 
+                    <td><?php echo $KLHZ_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KONX</td> 
+                    <td>Currituck, Currituck County Airport</td> 
+                    <td>Currituck</td> 
+                    <td>16</td> 
+                    <td><?php echo $KONX_cond; ?></td> 
+                    <td><?php echo $KONX_temp; ?></td> 
+                    <td><?php echo $KONX_24hi; ?></td> 
+                    <td><?php echo $KONX_24lo; ?></td> 
+                    <td><?php echo $KONX_dewp; ?></td> 
+                    <td><?php echo $KONX_temp-$KONX_dewp; ?></td> 
+                    <td><?php echo $KONX_1pcp; ?></td>
+                    <td><?php echo $KONX_wdir; ?> <?php echo $KONX_wind; ?></td>
+                    <td><?php echo $KONX_visi; ?></td> 
+                    <td><?php echo $KONX_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KSIF</td> 
+                    <td>Reidsville, Rockingham County NC Shiloh Airport</td> 
+                    <td>Rockingham</td> 
+                    <td>692</td> 
+                    <td><?php echo $KSIF_cond; ?></td> 
+                    <td><?php echo $KSIF_temp; ?></td> 
+                    <td><?php echo $KSIF_24hi; ?></td> 
+                    <td><?php echo $KSIF_24lo; ?></td> 
+                    <td><?php echo $KSIF_dewp; ?></td> 
+                    <td><?php echo $KSIF_temp-$KSIF_dewp; ?></td> 
+                    <td><?php echo $KSIF_1pcp; ?></td>
+                    <td><?php echo $KSIF_wdir; ?> <?php echo $KSIF_wind; ?></td>
+                    <td><?php echo $KSIF_visi; ?></td> 
+                    <td><?php echo $KSIF_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>K24A</td> 
+                    <td>Jackson County Airport</td> 
+                    <td>Jackson</td> 
+                    <td>2857</td> 
+                    <td><?php echo $K24A_cond; ?></td> 
+                    <td><?php echo $K24A_temp; ?></td> 
+                    <td><?php echo $K24A_24hi; ?></td> 
+                    <td><?php echo $K24A_24lo; ?></td> 
+                    <td><?php echo $K24A_dewp; ?></td> 
+                    <td><?php echo $K24A_temp-$K24A_dewp; ?></td> 
+                    <td><?php echo $K24A_1pcp; ?></td>
+                    <td><?php echo $K24A_wdir; ?> <?php echo $K24A_wind; ?></td>
+                    <td><?php echo $K24A_visi; ?></td> 
+                    <td><?php echo $K24A_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KETC</td> 
+                    <td>Tarboro-Edgecombe Airport</td> 
+                    <td>Edgecombe</td> 
+                    <td>52</td> 
+                    <td><?php echo $KETC_cond; ?></td> 
+                    <td><?php echo $KETC_temp; ?></td> 
+                    <td><?php echo $KETC_24hi; ?></td> 
+                    <td><?php echo $KETC_24lo; ?></td> 
+                    <td><?php echo $KETC_dewp; ?></td> 
+                    <td><?php echo $KETC_temp-$KETC_dewp; ?></td> 
+                    <td><?php echo $KETC_1pcp; ?></td>
+                    <td><?php echo $KETC_wdir; ?> <?php echo $KETC_wind; ?></td>
+                    <td><?php echo $KETC_visi; ?></td> 
+                    <td><?php echo $KETC_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KIXA</td> 
+                    <td>Halifax-Northampton Regional Airport</td> 
+                    <td>Halifax</td> 
+                    <td>144</td> 
+                    <td><?php echo $KIXA_cond; ?></td> 
+                    <td><?php echo $KIXA_temp; ?></td> 
+                    <td><?php echo $KIXA_24hi; ?></td> 
+                    <td><?php echo $KIXA_24lo; ?></td> 
+                    <td><?php echo $KIXA_dewp; ?></td> 
+                    <td><?php echo $KIXA_temp-$KIXA_dewp; ?></td> 
+                    <td><?php echo $KIXA_1pcp; ?></td>
+                    <td><?php echo $KIXA_wdir; ?> <?php echo $KIXA_wind; ?></td>
+                    <td><?php echo $KIXA_visi; ?></td> 
+                    <td><?php echo $KIXA_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>KSCR</td> 
+                    <td>Siler City Municipal Airport</td> 
+                    <td>Chatham</td> 
+                    <td>614</td> 
+                    <td><?php echo $KSCR_cond; ?></td> 
+                    <td><?php echo $KSCR_temp; ?></td> 
+                    <td><?php echo $KSCR_24hi; ?></td> 
+                    <td><?php echo $KSCR_24lo; ?></td> 
+                    <td><?php echo $KSCR_dewp; ?></td> 
+                    <td><?php echo $KSCR_temp-$KSCR_dewp; ?></td> 
+                    <td><?php echo $KSCR_1pcp; ?></td>
+                    <td><?php echo $KSCR_wdir; ?> <?php echo $KSCR_wind; ?></td>
+                    <td><?php echo $KSCR_visi; ?></td> 
+                    <td><?php echo $KSCR_metr; ?></td> 
+                </tr>
+                <tr>
+                    <td>K7W6</td> 
+                    <td>Hyde County Airport</td> 
+                    <td>Hyde</td> 
+                    <td>6</td> 
+                    <td><?php echo $K7W6_cond; ?></td> 
+                    <td><?php echo $K7W6_temp; ?></td> 
+                    <td><?php echo $K7W6_24hi; ?></td> 
+                    <td><?php echo $K7W6_24lo; ?></td> 
+                    <td><?php echo $K7W6_dewp; ?></td> 
+                    <td><?php echo $K7W6_temp-$K7W6_dewp; ?></td> 
+                    <td><?php echo $K7W6_1pcp; ?></td>
+                    <td><?php echo $K7W6_wdir; ?> <?php echo $K7W6_wind; ?></td>
+                    <td><?php echo $K7W6_visi; ?></td> 
+                    <td><?php echo $K7W6_metr; ?></td> 
+                </tr>
+                </tbody>
+
+            </table>
+            
+    
+    </body>
+    
+</html>
